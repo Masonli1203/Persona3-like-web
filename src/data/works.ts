@@ -1,0 +1,83 @@
+export const creativeWorks = [
+  {
+    id: '01',
+    title: 'Untitled / 01',
+    category: 'Moving image',
+    format: 'Film & motion',
+    tone: 'blue',
+  },
+  {
+    id: '02',
+    title: 'Untitled / 02',
+    category: 'AI studies',
+    format: 'Generative image',
+    tone: 'dark',
+  },
+  {
+    id: '03',
+    title: 'Untitled / 03',
+    category: 'Interactive',
+    format: 'Interactive study',
+    tone: 'light',
+  },
+  {
+    id: '04',
+    title: 'Untitled / 04',
+    category: 'Moving image',
+    format: 'Motion study',
+    tone: 'dark',
+  },
+  {
+    id: '05',
+    title: 'Untitled / 05',
+    category: 'AI studies',
+    format: 'Visual experiment',
+    tone: 'blue',
+  },
+  {
+    id: '06',
+    title: 'Untitled / 06',
+    category: 'Interactive',
+    format: 'Interface study',
+    tone: 'dark',
+  },
+] as const;
+
+export const projects = [
+  {
+    id: '01',
+    title: 'Project / 01',
+    category: 'Independent project',
+    description: 'A place for your project story: the idea, the process, and what comes next.',
+    note: 'Project overview and product visuals will be added here.',
+    tags: ['Overview', 'Process', 'Product'],
+    label: 'PRODUCT PREVIEW COMING SOON',
+  },
+  {
+    id: '02',
+    title: 'Project / 02',
+    category: 'Project placeholder',
+    description: 'Room for another independent idea.',
+    note: 'Project name, summary, role, and outcome are awaiting content.',
+    tags: ['Concept', 'Process'],
+    label: 'PROJECT MEDIA COMING SOON',
+  },
+  {
+    id: '03',
+    title: 'Project / 03',
+    category: 'Project placeholder',
+    description: 'Room for an interactive experiment.',
+    note: 'Project name, summary, role, and outcome are awaiting content.',
+    tags: ['Experiment', 'Interaction'],
+    label: 'PROJECT MEDIA COMING SOON',
+  },
+  {
+    id: '04',
+    title: 'Project / 04',
+    category: 'Project placeholder',
+    description: 'Room for what comes next.',
+    note: 'Project name, summary, role, and outcome are awaiting content.',
+    tags: ['Exploration', 'Process'],
+    label: 'PROJECT MEDIA COMING SOON',
+  },
+] as const;

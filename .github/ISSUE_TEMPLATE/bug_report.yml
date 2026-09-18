@@ -1,0 +1,25 @@
+name: Bug report / 问题反馈
+description: Report a reproducible layout or interaction problem.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened? / 出现了什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce / 复现步骤
+      description: Include the route, action, and expected result.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, device, viewport / 浏览器、设备、窗口大小
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or relevant logs / 截图或相关日志
+      description: Remove personal details and credentials before sharing.

@@ -1,0 +1,223 @@
+.chapter-transition {
+  --glass-glow: #153257;
+  --glass-dark: #0a1526;
+  --glass-black: #050a13;
+  --glass-dial: #080f1c;
+  --glass-muted: #6d92ba;
+  --glass-light: #deefff;
+  --glass-accent: #7cc4ff;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: default;
+  outline: 0;
+  color: var(--glass-light);
+  animation: chapter-arrive 260ms ease-out both;
+}
+.chapter-transition.phase-shatter {
+  --glass-glow: var(--midnight-green);
+  --glass-dark: var(--midnight-dark);
+  --glass-black: #050a04;
+  --glass-dial: #091109;
+  --glass-muted: #8aaf69;
+  --glass-light: #eeffdd;
+  --glass-accent: #baf28c;
+}
+.glass-layers,
+.glass-shards {
+  position: absolute;
+  inset: 0;
+}
+.glass-viewport {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.glass-surface circle,
+.glass-surface path,
+.glass-surface line,
+.glass-surface text,
+.glass-surface tspan {
+  transition:
+    fill 160ms linear,
+    stroke 160ms linear;
+}
+.glass-viewport stop {
+  transition: stop-color 160ms linear;
+}
+.glass-shards {
+  visibility: hidden;
+}
+.glass-shard {
+  position: absolute;
+  pointer-events: none;
+  contain: strict;
+}
+.glass-layers[data-ready='true'] .glass-shard {
+  will-change: transform, opacity;
+}
+.phase-shatter .glass-layers[data-ready='true'] .glass-shards {
+  animation: show-shards 1ms step-end 160ms both;
+}
+.phase-shatter .glass-layers[data-ready='true'] .glass-viewport {
+  animation: hide-clock 1ms step-end 160ms both;
+}
+.phase-shatter .glass-layers[data-ready='true'] .glass-shard {
+  animation:
+    glass-flight 1000ms linear var(--delay) both,
+    glass-dissolve 1000ms linear calc(var(--delay) + 167ms) both;
+}
+.phase-shatter .glass-layers:not([data-ready='true']) .glass-viewport {
+  animation: glass-fallback 600ms ease-in 160ms both;
+}
+.clock-hand-sweep {
+  animation: midnight-sweep 620ms cubic-bezier(0.45, 0.04, 0.2, 1) 280ms both;
+}
+@keyframes chapter-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes midnight-sweep {
+  from {
+    transform: rotate(-30deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+@keyframes show-shards {
+  from {
+    visibility: hidden;
+  }
+  to {
+    visibility: visible;
+  }
+}
+@keyframes hide-clock {
+  from {
+    visibility: visible;
+  }
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes glass-fallback {
+  to {
+    opacity: 0;
+  }
+}
+/* Keep the flight's slow / hold / accelerate rhythm independent of the fade. */
+@keyframes glass-flight {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    animation-timing-function: cubic-bezier(0.2, 0.65, 0.3, 1);
+  }
+  38% {
+    transform: translate3d(var(--drift-x), var(--drift-y), 0) rotate(var(--drift-spin));
+  }
+  53% {
+    transform: translate3d(var(--drift-x), var(--drift-y), 0) rotate(var(--drift-spin));
+    animation-timing-function: cubic-bezier(0.65, 0, 1, 1);
+  }
+  100% {
+    transform: translate3d(var(--flight-x), var(--flight-y), 0) rotate(var(--flight-spin));
+  }
+}
+/* Offset the dissolve by 10 frames at 60 fps; its zero-opacity tail precedes overlay removal. */
+@keyframes glass-dissolve {
+  0%,
+  28% {
+    opacity: 1;
+  }
+  53% {
+    opacity: 0.78;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  88%,
+  100% {
+    opacity: 0;
+  }
+}
+.phase-error {
+  display: grid;
+  place-items: center;
+  background: #080f1c;
+}
+.transition-recovery {
+  max-width: 35rem;
+  padding: 2rem;
+}
+.transition-recovery h2 {
+  font-size: 1.5rem;
+}
+.transition-recovery p {
+  color: #a8bbd5;
+  line-height: 1.7;
+  margin: 1rem 0;
+}
+.transition-recovery a,
+.transition-recovery button {
+  display: inline-block;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 0.8rem 0.5rem 0;
+  background: #1c45d4;
+  color: white;
+  border: 1px solid #83a5ff;
+  font: inherit;
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-transition,
+  .clock-hand-sweep,
+  .glass-shard {
+    animation: none !important;
+  }
+  .glass-surface *,
+  .glass-viewport stop {
+    transition: none !important;
+  }
+}
+
+/* Chapter-to-chapter wipe: cover, then open a circular window from the same control. */
+.chapter-transition.circle-transition {
+  --circle-center: #70cbed;
+  --circle-mid: #6ba8ed;
+  --circle-edge: #4d72ed;
+  animation: none;
+}
+.chapter-circle-surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.chapter-circle-disc {
+  animation: chapter-circle-grow 250ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes chapter-circle-grow {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-circle-disc {
+    animation-duration: 1ms;
+  }
+}
+
+/* Only the chosen chapter switch stays above its circle; all other controls remain underneath. */
+.page-stage[data-transition='circle'] .chapter-link[data-circle-source='true'] {
+  z-index: 10001;
+}

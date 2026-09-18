@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <title>Abstract portfolio artwork placeholder</title>
+  <rect width="1672" height="941" fill="#0065fd"/>
+  <path d="M0 0H525L1040 941H0Z" fill="#fcfcfc"/>
+  <g fill="#090b11">
+    <path d="M638 40 897 93 782 539 524 486Z"/>
+    <path d="M524 505 782 558 1000 941H405Z"/>
+  </g>
+  <path d="m658 75 205 42-102 386-205-42Z" fill="#164bfa"/>
+  <circle cx="709" cy="262" r="93" fill="none" stroke="#69dcff" stroke-width="2"/>
+  <path d="M598 262H820M709 151V373" fill="none" stroke="#69dcff" stroke-width="2"/>
+  <path d="m637 282 61-55 91 44-63 53Z" fill="#f1f2eb"/>
+  <path d="m608 559 141 31 92 148-172-53Z" fill="#0065fd"/>
+  <path d="m557 673 112 45 93 158-177-41Z" fill="#164bfa"/>
+  <g fill="#f1f2eb" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" letter-spacing="3">
+    <text x="630" y="407" transform="rotate(12 630 407)">YOUR VISUAL</text>
+    <text x="580" y="471" transform="rotate(12 580 471)" font-size="11">REPLACE THIS ARTWORK</text>
+  </g>
+</svg>
