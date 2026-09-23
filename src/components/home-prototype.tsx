@@ -1,13 +1,95 @@
 'use client';
 
-import { motion, useSpring, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useSpring, useTransform } from 'framer-motion';
+import { site } from '@/data/site';
 import Image from 'next/image';
+import localFont from 'next/font/local';
 import { useEffect, useState, useSyncExternalStore, type PointerEvent } from 'react';
 import { sections } from '@/data/sections';
-import { site } from '@/data/site';
 
 import { TransitionLink, usePageTransition } from './page-transition';
 const MotionLink = motion.create(TransitionLink);
+const manifestoFont = localFont({ src: '../app/fonts/anton-regular.ttf', display: 'swap' });
+
+const manifestoCopy = [
+  ['ALWAYS', 'CURIOUS.'],
+  ['ALWAYS IN', 'MOTION.'],
+] as const;
+
+function Manifesto({ animated }: { animated: boolean }) {
+  const lines = [...manifestoCopy[0], ...manifestoCopy[1]];
+  const state = 'default';
+  return (
+    <div
+      className={`manifesto-stage ${manifestoFont.className}`}
+      data-state={state}
+      data-animated={animated}
+    >
+      <span className="sr-only">{lines.join(' ')}</span>
+      <AnimatePresence initial={false} mode="sync">
+        <motion.svg
+          key={state}
+          className="manifesto-art"
+          viewBox="0 0 520 292"
+          aria-hidden="true"
+          focusable="false"
+          initial={animated ? { opacity: 0, x: -24, clipPath: 'inset(0 100% 0 0)' } : false}
+          animate={{ opacity: 1, x: 0, clipPath: 'inset(0 0% 0 0)' }}
+          exit={animated ? { opacity: 0, x: 32, clipPath: 'inset(0 0 0 100%)' } : { opacity: 0 }}
+          transition={{ duration: animated ? 0.28 : 0, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <defs>
+            <clipPath id={`slice-top-${state}`}>
+              <rect width="520" height="75" />
+            </clipPath>
+            <clipPath id={`slice-bottom-${state}`}>
+              <rect y="79" width="520" height="61" />
+            </clipPath>
+          </defs>
+          {lines.map((line, index) => {
+            const sliced = index % 2 === 1;
+            const length = line === 'ALWAYS' ? 330 : line === 'ALWAYS IN' ? 415 : 420;
+            const text = (
+              <text x="38" y="127" textLength={length} lengthAdjust="spacingAndGlyphs">
+                {line}
+              </text>
+            );
+            return (
+              <svg
+                key={`${line}-${index}`}
+                x="0"
+                y={(index * 292) / lines.length}
+                width="520"
+                height={292 / lines.length}
+                viewBox="0 0 520 140"
+                preserveAspectRatio="none"
+                overflow="visible"
+                className={`manifesto-row ${sliced ? 'is-sliced' : ''}`}
+                style={{ animationDelay: `${index * 35}ms` }}
+              >
+                {sliced ? (
+                  <>
+                    <g clipPath={`url(#slice-top-${state})`}>
+                      <g className="slice-upper">{text}</g>
+                    </g>
+                    <g clipPath={`url(#slice-bottom-${state})`}>
+                      <g className="slice-lower">{text}</g>
+                    </g>
+                    <g className="slice-ticks">
+                      <path d={`M0 64h23 M24 76h22 M${length + 47} 88h26 M${length + 82} 102h22`} />
+                    </g>
+                  </>
+                ) : (
+                  text
+                )}
+              </svg>
+            );
+          })}
+        </motion.svg>
+      </AnimatePresence>
+    </div>
+  );
+}
 
 function subscribeReducedMotion(notify: () => void) {
   const query = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -44,6 +126,7 @@ function SectionLink({
   return (
     <MotionLink
       href={`/${section.id}`}
+      pressFeedback
       style={{ x, y }}
       className={`section-link ${selected ? 'selected' : ''}`}
       onPointerMove={move}
@@ -60,7 +143,9 @@ function SectionLink({
       </span>
       <span className="section-number">{section.number}</span>
       <span className="section-type">
-        <span className="section-title">{section.title}</span>
+        <span className="section-title" data-press-label>
+          {section.title}
+        </span>
         <span className="section-subtitle">{section.subtitle}</span>
       </span>
       <span className="section-arrow" aria-hidden="true">
@@ -71,7 +156,11 @@ function SectionLink({
 }
 
 export function HomePrototype() {
-  const [previewIndex, setPreviewIndex] = useState(0);
+  const [{ index: previewIndex, direction }, setPreview] = useState({ index: 0, direction: 1 });
+  const selectPreview = (index: number) =>
+    setPreview((previous) =>
+      previous.index === index ? previous : { index, direction: index > previous.index ? 1 : -1 },
+    );
   const { motionOff, setMotionOff } = usePageTransition();
   const [finePointer, setFinePointer] = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
@@ -91,7 +180,7 @@ export function HomePrototype() {
   const backdropX = useTransform(x, [-21, 21], [8, -8]);
   const backdropY = useTransform(y, [-15, 15], [5, -5]);
   const emphasized = enabled ? (hovered ?? (focused === previewIndex ? focused : null)) : null;
-  const section = sections[previewIndex];
+  // Content still responds to focus/hover when motion is disabled.
 
   useEffect(() => {
     const query = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -125,7 +214,7 @@ export function HomePrototype() {
       }}
     >
       <a href="#section-navigation" className="skip-link">
-        Skip to exploration
+        Skip to navigation
       </a>
       <div className="index-backdrop" aria-hidden="true">
         <motion.div className="index-artwork-plane" style={{ x: backdropX, y: backdropY }}>
@@ -143,13 +232,10 @@ export function HomePrototype() {
       <div className="blue-field" aria-hidden="true" />
       <div className="diagonal-line" aria-hidden="true" />
       <header className="masthead flex items-center justify-between">
-        <a href="#main" className="wordmark" aria-label={site.name + ' home'}>
+        <a href="#main" className="wordmark" aria-label={`${site.name} home`}>
           {site.initials}
           <span>↗</span>
         </a>
-        <span className="edition">
-          PERSONAL PORTFOLIO <span>/</span> VOL. 01
-        </span>
         <button
           className="motion-toggle"
           onClick={() => setMotionOff((v) => !v)}
@@ -167,7 +253,7 @@ export function HomePrototype() {
             <span className="tiny-cross" aria-hidden="true">
               +
             </span>{' '}
-            BETWEEN ART & TECHNOLOGY
+            {site.label}
           </div>
           <motion.div
             style={{
@@ -188,47 +274,19 @@ export function HomePrototype() {
                 <span className="name-period">.</span>
               </span>
             </h1>
-            <span className="vertical-label">{site.label.toUpperCase()}</span>
           </motion.div>
           <div className="intro">
-            <span className="intro-mark" aria-hidden="true">
-              ↳
-            </span>
             <div>
               <h2>{site.role}</h2>
               <p>{site.disciplines.join(' · ')}</p>
             </div>
           </div>
-          <motion.div style={{ x: reverseX, y: reverseY }} className="media-frame">
-            <div className="media-top">
-              <span>{section.tag}</span>
-              <span aria-hidden="true">↗</span>
-            </div>
-            <div className="media-center">
-              <span className="frame-cross" aria-hidden="true">
-                +
-              </span>
-              <span>
-                MEDIA
-                <br />
-                <strong>COMING SOON</strong>
-              </span>
-              <span className="frame-cross" aria-hidden="true">
-                +
-              </span>
-            </div>
-            <div className="media-bottom">
-              <span>{section.medium}</span>
-              <span>16:9</span>
-            </div>
+          <motion.div style={{ x: reverseX, y: reverseY }} className="media-frame manifesto-frame">
+            <Manifesto animated={!reduced && !motionOff} />
           </motion.div>
         </section>
 
         <section className="explore" aria-label="Explore portfolio">
-          <div className="explore-heading">
-            <span>SELECT YOUR DIRECTION</span>
-            <span aria-hidden="true">↓</span>
-          </div>
           <nav
             id="section-navigation"
             className={`section-menu ${emphasized !== null ? 'has-emphasis' : ''}`}
@@ -245,12 +303,12 @@ export function HomePrototype() {
                 onPointerEnter={(event) => {
                   if (event.pointerType === 'mouse') {
                     setHovered(index);
-                    setPreviewIndex(index);
+                    selectPreview(index);
                   }
                 }}
                 onFocus={() => {
                   setFocused(index);
-                  setPreviewIndex(index);
+                  selectPreview(index);
                 }}
               >
                 <SectionLink section={item} selected={previewIndex === index} enabled={enabled} />
@@ -263,24 +321,47 @@ export function HomePrototype() {
             aria-live="polite"
             aria-atomic="true"
           >
-            <div className="preview-meta">
-              <span>0{previewIndex + 1} / EXPLORE</span>
-              <span>HOMEPAGE PREVIEW</span>
+            <span className="sr-only">
+              {sections[previewIndex].headline} {sections[previewIndex].description}
+            </span>
+            <div className="section-preview-copy" aria-hidden="true">
+              {sections.map((item) => (
+                <div key={item.id} className="section-preview-measure" aria-hidden="true">
+                  <h2>{item.headline}</h2>
+                  <p>{item.description}</p>
+                </div>
+              ))}
+              <AnimatePresence initial={false} custom={direction} mode="sync">
+                <motion.div
+                  key={previewIndex}
+                  className="section-preview-slide"
+                  custom={direction}
+                  variants={{
+                    enter: (d: number) => ({ x: d * 80, opacity: 0 }),
+                    center: { x: 0, opacity: 1 },
+                    exit: (d: number) => ({ x: -d * 80, opacity: 0 }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced || motionOff ? 0 : 0.3,
+                    ease: [0.22, 0.68, 0.2, 1],
+                  }}
+                >
+                  <h2>{sections[previewIndex].headline}</h2>
+                  <p>{sections[previewIndex].description}</p>
+                </motion.div>
+              </AnimatePresence>
             </div>
-            <h2>{section.headline}</h2>
-            <p>{section.description}</p>
-            <span className="preview-note">Select a chapter to explore.</span>
           </div>
         </section>
       </div>
       <footer className="footer flex items-center justify-between">
         <span>
-          © {site.copyrightYear} {site.name.toUpperCase()}
+          © {site.copyrightYear} {site.name}
         </span>
-        <span className="footer-manifesto">ALWAYS CURIOUS. ALWAYS IN MOTION.</span>
-        <span className="footer-index">
-          INDEX <span>001 — 003</span>
-        </span>
+        <span className="footer-manifesto">{site.location}</span>
       </footer>
     </main>
   );

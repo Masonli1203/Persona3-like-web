@@ -1,91 +1,204 @@
 import type { Metadata } from 'next';
 import { site } from '@/data/site';
+import Image from 'next/image';
 import { ModuleHeading } from '@/components/module-parts';
-export const metadata: Metadata = { title: `About — ${site.name}` };
+import { MediaFocus } from '@/components/media-focus';
+import { profile } from '@/data/profile';
+import { TransitionLink } from '@/components/page-transition';
+
+export const metadata: Metadata = {
+  title: `About — ${site.name}`,
+  description: profile.summary,
+};
+
 export default function AboutPage() {
   return (
     <>
       <ModuleHeading
         number="03"
         title="ABOUT"
-        description="The person behind the pixels."
-        note="THE HUMAN SIDE"
+        description="AI, visual effects, and interactive experiences."
       />
       <div className="about-grid">
-        <aside className="profile-card">
+        <MediaFocus as="aside" className="profile-card" label={`${site.name} — personal profile`}>
           <div className="micro profile-top">
             <span>PERSONAL FILE</span>
             <span>{site.initials} / 03</span>
           </div>
-          <div className="profile-portrait" role="img" aria-label="Portrait placeholder">
-            <span aria-hidden="true">{site.initials}</span>
-            <span className="micro">PORTRAIT COMING SOON</span>
+          <div className="profile-portrait">
+            <Image
+              src={profile.portrait}
+              alt={`${profile.name} profile illustration`}
+              fill
+              sizes="(max-width: 560px) 88vw, (max-width: 760px) 28rem, (max-width: 1100px) 34vw, (max-width: 1800px) 28vw, 32rem"
+              className="profile-portrait-image"
+            />
           </div>
           <div className="profile-name">
-            <h2>{site.name}</h2>
-            <p>{site.label}</p>
-            <span className="micro">{site.role.toUpperCase()}</span>
+            <h2>{profile.name}</h2>
+            <p>{profile.fullName}</p>
+            <span className="micro">{profile.role}</span>
           </div>
           <dl className="profile-facts">
+            <div>
+              <dt>Based in</dt>
+              <dd>{profile.location}</dd>
+            </div>
+            <div>
+              <dt>Currently</dt>
+              <dd>{site.current}</dd>
+            </div>
             <div>
               <dt>Focus</dt>
               <dd>{site.focus}</dd>
             </div>
-            <div>
-              <dt>Medium</dt>
-              <dd>{site.medium}</dd>
-            </div>
           </dl>
-          <button className="cv-button" disabled>
-            CV <span>COMING SOON</span>
-          </button>
-        </aside>
+          {profile.email && (
+            <a className="profile-email" href={`mailto:${profile.email}`}>
+              {profile.email}
+              <span aria-hidden="true">↗</span>
+            </a>
+          )}
+          {profile.cv && (
+            <a
+              className="cv-button"
+              href={profile.cv}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${profile.name}’s CV (PDF, opens in a new tab)`}
+            >
+              CV <span>VIEW PDF ↗</span>
+            </a>
+          )}
+        </MediaFocus>
+
         <div className="about-story">
-          <section className="about-intro">
+          <section className="about-intro" aria-labelledby="about-introduction">
             <span className="micro">01 / INTRODUCTION</span>
-            <h2>
-              Curiosity is
+            <h2 id="about-introduction">
+              Visual effects
               <br />
-              the constant<span>.</span>
+              and web development<span>.</span>
             </h2>
-            <p>{site.introduction}</p>
-            <p className="secondary-copy">{site.secondaryIntroduction}</p>
+            {profile.introduction.map((paragraph, index) => (
+              <p key={paragraph} className={index > 0 ? 'secondary-copy' : undefined}>
+                {paragraph}
+              </p>
+            ))}
           </section>
-          <section className="about-section">
+
+          <section className="about-section" aria-labelledby="about-education">
             <div className="section-label">
-              <h3>Background</h3>
-              <span className="micro">02 / JOURNEY</span>
+              <h3 id="about-education">Education</h3>
+              <span className="micro">02 / LEARNING</span>
             </div>
-            <div className="timeline-row">
-              <span className="timeline-marker" aria-hidden="true" />
-              <div>
-                <h4>Education</h4>
-                <p>Education details will be added here.</p>
-              </div>
-              <span className="micro">TO BE ADDED</span>
-            </div>
-            <div className="timeline-row">
-              <span className="timeline-marker" aria-hidden="true" />
-              <div>
-                <h4>Experience</h4>
-                <p>Roles, collaborations, and milestones will be added here.</p>
-              </div>
-              <span className="micro">TO BE ADDED</span>
-            </div>
-          </section>
-          <section className="about-section">
-            <div className="section-label">
-              <h3>Fields of interest</h3>
-              <span className="micro">03 / TOOLKIT</span>
-            </div>
-            <div className="interest-list">
-              {site.interests.map((interest) => (
-                <span key={interest}>{interest}</span>
+            <ul className="about-timeline">
+              {profile.education.map((item) => (
+                <li className="timeline-row" key={item.school}>
+                  <span className="timeline-marker" aria-hidden="true" />
+                  <div>
+                    <div className="timeline-heading">
+                      <h4>{item.school}</h4>
+                      <span className="micro">{item.period}</span>
+                    </div>
+                    <p className="timeline-role">{item.degree}</p>
+                    <p>{item.location}</p>
+                  </div>
+                </li>
               ))}
+            </ul>
+          </section>
+
+          <section className="about-section" aria-labelledby="about-experience">
+            <div className="section-label">
+              <h3 id="about-experience">Experience</h3>
+              <span className="micro">03 / PRACTICE</span>
             </div>
-            <p className="draft-caption">
-              Specific tools and skills will be added with the full profile.
-            </p>
+            <ul className="about-timeline">
+              {profile.experience.map((item) => (
+                <li className="timeline-row" key={item.company}>
+                  <span className="timeline-marker" aria-hidden="true" />
+                  <div>
+                    <div className="timeline-heading">
+                      <h4>{item.company}</h4>
+                      <span className="micro">{item.period}</span>
+                    </div>
+                    <p className="timeline-role">
+                      {item.role} · {item.location}
+                    </p>
+                    <p>{item.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="about-section" aria-labelledby="about-projects">
+            <div className="section-label">
+              <h3 id="about-projects">Selected projects</h3>
+              <span className="micro">04 / BUILDING</span>
+            </div>
+            <ul className="about-projects">
+              {profile.projects.map((project) => (
+                <li key={project.name}>
+                  <span className="micro">{project.medium}</span>
+                  <h4>{project.name}</h4>
+                  <p>{project.description}</p>
+                  <div className="project-actions">
+                    {'caseStudyHref' in project && (
+                      <TransitionLink href={project.caseStudyHref}>
+                        Read the case study <span aria-hidden="true">↗</span>
+                      </TransitionLink>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="about-section" aria-labelledby="about-toolkit">
+            <div className="section-label">
+              <h3 id="about-toolkit">Tools & languages</h3>
+              <span className="micro">05 / TOOLKIT</span>
+            </div>
+            <dl className="about-skills">
+              {profile.skills.map((skill) => (
+                <div key={skill.category}>
+                  <dt>{skill.category}</dt>
+                  <dd>{skill.tools}</dd>
+                </div>
+              ))}
+            </dl>
+            <h4 className="about-languages-heading">Languages</h4>
+            <ul className="about-languages">
+              {profile.languages.map((language) => (
+                <li key={language.name}>
+                  <span>{language.name}</span>
+                  <span className="micro">{language.level}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="about-section" aria-labelledby="about-recognition">
+            <div className="section-label">
+              <h3 id="about-recognition">Recognition</h3>
+              <span className="micro">06 / AWARDS</span>
+            </div>
+            <ul className="about-timeline">
+              {profile.awards.map((award) => (
+                <li className="timeline-row" key={award.name}>
+                  <span className="timeline-marker" aria-hidden="true" />
+                  <div>
+                    <div className="timeline-heading">
+                      <h4>{award.name}</h4>
+                      <span className="micro">{award.period}</span>
+                    </div>
+                    <p>{award.institution}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </section>
         </div>
       </div>

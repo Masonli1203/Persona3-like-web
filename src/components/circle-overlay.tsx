@@ -21,7 +21,7 @@ export function CircleOverlay({
   phase: CirclePhase;
   circle: CircleGeometry;
   duration: number;
-  onStart: () => void;
+  onStart?: () => void;
   onComplete: () => void;
 }) {
   const id = `chapter-circle-${useId().replace(/:/g, '')}`;
@@ -34,7 +34,7 @@ export function CircleOverlay({
       preserveAspectRatio="none"
       aria-hidden="true"
       onAnimationStart={(event) => {
-        if (event.animationName === 'chapter-circle-grow') onStart();
+        if (event.animationName === 'chapter-circle-grow') onStart?.();
       }}
       onAnimationEnd={(event) => {
         if (event.animationName === 'chapter-circle-grow') onComplete();

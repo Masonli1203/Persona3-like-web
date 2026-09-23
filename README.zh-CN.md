@@ -1,60 +1,44 @@
 # Persona3-like-web
 
-参考 Persona 3 视觉节奏的开源个人网站模板：斜切构图、超大斜体文字、漫画笔触光标，以及轻量页面转场。
+受 Persona 界面风格启发的通用作品集模板。使用 Next.js、React、TypeScript、Tailwind CSS、Framer Motion 和 Three.js。
 
-[English](README.md) · [内容与样式修改](docs/CUSTOMIZATION.md) · [参与开发](CONTRIBUTING.md) · [MIT 许可证](LICENSE)
+[English](README.md) · [配置说明](docs/CUSTOMIZATION.md) · [MIT 许可](LICENSE)
 
 ![首页预览](docs/screenshots/home.png)
 
-[板块预览](docs/screenshots/creative.png) · [手机预览](docs/screenshots/mobile.png)
+## 当前功能
 
-## 已有功能
+- 首页视差、磁吸导航、动态文字和章节预览。
+- 持续挂载的墨迹光标、时钟碎片转场、按钮按压反馈和浮动章节导航。
+- Creative 四个分类、独立路由、可分享的作品弹层，以及支持翻页和返回位置恢复的照片查看器。
+- 本地视频与可选的 Mux 播放，默认不包含视频和播放 ID。
+- 项目预览、通用案例页、转场演示和可调尺寸、材质与配件的 3D 配置器。价格仅为演示估算。
+- 个人介绍、教育、经历、技能、奖项等占位内容。邮箱和简历未配置时不显示。
+- 本地字体、抽象占位图、通用图标、移动端布局和减少动态效果支持。
 
-- **首页**：鼠标视差、标题倾斜、磁吸按钮、漫画式悬停放大，以及随悬停切换的文字预览。
-- **Creative**：可筛选的作品卡片和展开说明。
-- **Projects**：项目选择列表与预览面板。
-- **About**：个人简介、经历和兴趣占位内容。
-- **全站光标**：即时跟随、笔触拖尾、按钮悬停反馈，跨页面和转场持续显示。
-- **两种转场**：首页进入板块时，时钟从十一点转到十二点后破碎消散；板块之间使用圆形扩散与揭示。
-- **适应性**：流式字号、稳定的滚动条占位、键盘焦点、触屏布局和减少动态效果支持。
+## 本地运行
 
-技术栈为 **Next.js App Router + TypeScript + Tailwind CSS + Framer Motion**。动画使用 CSS、SVG 和少量 Canvas 碎片，不依赖 Three.js 或 WebGL。
-
-这是前端模板，作品、媒体、经历和 CV 均为占位内容。没有连接登录系统、CMS、统计、视频平台或后端服务。
-
-## 本地启动
-
-建议使用 **Node.js 24** 和 npm；项目也允许 Node.js 22。无需环境变量或 API Key。
+推荐 Node.js 24（支持 22 及以上）。
 
 ```sh
-git clone https://github.com/Masonli1203/Persona3-like-web.git
-cd Persona3-like-web
 npm ci
 npm run dev
 ```
 
-浏览器打开 [http://127.0.0.1:3000](http://127.0.0.1:3000)。
+访问 [本地预览](http://127.0.0.1:3000)。默认无需环境变量。
 
-- **制作自己的独立网站**：点击 GitHub 的 **Use this template**。
-- **一起改进这个项目**：Fork 仓库、创建分支、提交 Pull Request。模板复制会创建独立历史，协作建议使用 Fork；详见 [GitHub 模板说明](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository)。
+## 替换内容
 
-## 从哪里修改
+- `src/data/site.ts`：姓名、缩写、身份、地点、页面 metadata 和首页插图。
+- `src/data/profile.ts`：简介、教育、经历、技能、邮箱和简历路径。
+- `src/data/sections.ts`：章节名称和首页预览文案。
+- `src/data/creativeProjects.ts`：分类、作品、照片与视频配置。
+- `src/data/works.ts`：项目列表与详情链接。
+- `src/app/(modules)/projects/`：通用项目详情页与交互示例。
 
-| 文件                                 | 内容                                       |
-| ------------------------------------ | ------------------------------------------ |
-| `src/data/site.ts`                   | 名字、简称、职业、介绍、兴趣、首页图片地址 |
-| `src/data/sections.ts`               | 三大板块名称与首页悬停预览文案             |
-| `src/data/works.ts`                  | 作品和项目示例                             |
-| `public/images/hero-placeholder.svg` | 通用桌面端视觉占位图                       |
-| `src/app/globals.css`                | 配色、字号、首页排版与光标                 |
-| `src/app/(modules)/modules.css`      | 板块排版与选择按钮                         |
-| `src/app/transitions.css`            | 转场外观与节奏                             |
+详细步骤见 [CUSTOMIZATION](docs/CUSTOMIZATION.md)。个人副本可通过 GitHub 的 Use this template 创建。
 
-模板已经替换为通用内容，不包含原个人网站的人像、参考照片、设计备份、凭据和仅适用于个人电脑的验证脚本。
-
-桌面背景使用 **1672 × 941** 画布，视觉主体位于左侧名字和右侧导航之间。手机竖屏保持几何背景。更换长名字、背景图或媒体前，请阅读[修改说明](docs/CUSTOMIZATION.md)。
-
-## 验证与测试
+## 验证
 
 ```sh
 npm run check
@@ -63,24 +47,12 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-浏览器测试会在 **3100** 端口启动本地生产服务器，因此先执行构建。Linux 可使用 `npx playwright install --with-deps chromium` 同时安装浏览器所需系统依赖。3000 端口的开发服务器可以继续运行。
+包含 lint、类型、格式、隐私保护、单元测试与浏览器测试。浏览器测试使用 3100 端口的生产服务。
 
-| 命令               | 用途                               |
-| ------------------ | ---------------------------------- |
-| `npm run dev`      | 本地开发                           |
-| `npm run build`    | 生成生产构建                       |
-| `npm run start`    | 在本机运行已构建版本               |
-| `npm run check`    | 代码规范、类型和格式检查           |
-| `npm run format`   | 格式化代码和文档                   |
-| `npm run test:e2e` | 浏览器导航、交互、光标和响应式检查 |
-| `npm test`         | 一次执行检查、构建和浏览器测试     |
+## 个人信息边界
 
-提交代码和 Pull Request 后，GitHub Actions 会执行检查、构建及浏览器测试。**仓库没有上线部署流程，也没有连接托管平台。**
+模板不包含原作者的简历、肖像、真实照片、影片、项目截图、经历、邮箱、播放 ID、密钥或本地资料，也不导入个人网站的 Git 历史。保留模板仓库原有的公开历史和必要许可署名。
 
-更多实现说明见[架构文档](docs/ARCHITECTURE.md)，后续可参与的内容见[路线图](docs/ROADMAP.md)。
+隐私检查用于保持上游模板通用；制作个人副本并加入自己的内容时，可相应调整规则。发布前仍应人工检查新素材和 Git 差异。
 
-## 许可证与视觉参考
-
-代码及仓库内通用 SVG 占位图采用 [MIT 许可证](LICENSE)，第三方依赖保留各自许可证。
-
-这是独立、非官方项目。Persona / Persona 3 仅作为视觉参考；仓库不包含游戏官方美术、音乐、Logo 或字体，也不隶属于 ATLUS 或 SEGA。替换媒体时请使用你有权公开分发的素材。
+本项目为非官方独立作品，不含官方游戏素材，与 ATLUS 或 SEGA 无隶属关系。代码和通用 SVG 使用 MIT 许可；字体保留各自的 OFL 许可。

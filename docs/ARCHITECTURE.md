@@ -20,13 +20,16 @@ It activates only for a fine mouse pointer with motion enabled. Native cursor hi
 
 The root type size grows with viewport width rather than being capped by window height. Shared type tokens keep labels and body copy readable. `scrollbar-gutter: stable` reserves scrollbar space, so temporary transition scroll locks do not squeeze the layout.
 
-The desktop homepage artwork is intentionally separate from portrait/mobile background rules. Chapter title alignment differs by route: Creative left, Projects center, About right.
+The desktop homepage artwork is intentionally separate from portrait/mobile background rules. Chapter pages share concise headings and a navigation dock that appears after the main navigation leaves the viewport.
 
 ## Data boundaries
 
-- `site.ts`: reusable identity and metadata.
-- `sections.ts`: three chapter summaries and homepage previews.
-- `works.ts`: work/project examples.
-- Page components: layout, selected state, filters, and currently static profile sections.
+- `site.ts`: shared identity and metadata.
+- `profile.ts`: structured profile and optional contact links.
+- `sections.ts`: chapter summaries and homepage previews.
+- `works.ts`: project examples and route links.
+- `creativeProjects.ts`: categories, media sources, and photo series.
 
-There are no server secrets, external data services, or required environment variables. Adding a CMS or a video service should be a separate integration with documented setup, not a prerequisite for running this template.
+Creative category pages render a client gallery inside Suspense. Work selection is represented in the URL query and a native dialog. The photo reader restores the grid position and focus when returning. Three.js loads when the configurator nears the viewport; Mux Player loads only for configured playback.
+
+No secrets or external services are required for the default starter. The optional Mux management client is server-only. Public playback IDs belong in media configuration only after the template is personalized.

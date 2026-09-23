@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useId, useMemo, useRef, useSyncExternalStore, type CSSProperties } from 'react';
-import { makeGlassShards } from './glass-geometry';
 import { site } from '@/data/site';
+import { makeGlassShards } from './glass-geometry';
 import { boundShard, prepareGlassSprites } from './glass-sprites';
 
 function subscribeViewport(notify: () => void) {
@@ -159,9 +159,10 @@ export function ClockOverlay({
               letterSpacing="2"
               fill="var(--glass-muted)"
             >
-              <text x={width * 0.08} y={height * 0.09}>
-                {site.initials} / {width <= 600 ? 'TRANSITION' : 'CHAPTER TRANSITION'}
-              </text>
+              <text
+                x={width * 0.08}
+                y={height * 0.09}
+              >{`${site.name.toUpperCase()} / ${width <= 600 ? 'TRANSITION' : 'CHAPTER TRANSITION'}`}</text>
               <text
                 x={width * 0.92}
                 y={height * 0.09}
@@ -188,7 +189,7 @@ export function ClockOverlay({
                 fontSize={textSize * 1.5}
                 fill="var(--glass-light)"
               >
-                {chapter} ↗
+                {chapter}
               </tspan>
             </text>
           </g>

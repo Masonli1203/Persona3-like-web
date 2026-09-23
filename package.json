@@ -1,6 +1,6 @@
 {
   "name": "persona3-like-web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
@@ -10,15 +10,23 @@
     "typecheck": "next typegen && tsc --noEmit --incremental false",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run lint && npm run typecheck && npm run format:check",
+    "check": "npm run lint && npm run typecheck && npm run format:check && npm run check:privacy && npm run test:unit",
     "test:e2e": "playwright test",
-    "test": "npm run check && npm run build && npm run test:e2e"
+    "test": "npm run check && npm run build && npm run test:e2e",
+    "test:unit": "node --experimental-strip-types --test tests/*.test.mjs",
+    "check:privacy": "node scripts/check-template-privacy.mjs",
+    "check:mux": "node --env-file-if-exists=.env.local scripts/check-mux.mjs",
+    "preview:alcove": "node --experimental-strip-types scripts/generate-alcove-preview.mjs"
   },
   "dependencies": {
     "next": "16.3.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "framer-motion": "13.4.0"
+    "framer-motion": "13.4.0",
+    "@mux/mux-node": "^15.2.0",
+    "@mux/mux-player-react": "^3.13.4",
+    "server-only": "^0.0.1",
+    "three": "0.186.0"
   },
   "devDependencies": {
     "typescript": "5.9.3",
@@ -30,11 +38,11 @@
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.5",
     "@playwright/test": "1.63.0",
-    "prettier": "3.9.8"
+    "prettier": "3.9.8",
+    "@types/three": "0.186.0"
   },
   "description": "A Persona 3-inspired portfolio template with expressive typography and lightweight interactive transitions.",
   "license": "MIT",
-  "author": "Mason Li",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Masonli1203/Persona3-like-web.git"

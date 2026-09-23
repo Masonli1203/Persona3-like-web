@@ -1,83 +1,71 @@
-export const creativeWorks = [
-  {
-    id: '01',
-    title: 'Untitled / 01',
-    category: 'Moving image',
-    format: 'Film & motion',
-    tone: 'blue',
-  },
-  {
-    id: '02',
-    title: 'Untitled / 02',
-    category: 'AI studies',
-    format: 'Generative image',
-    tone: 'dark',
-  },
-  {
-    id: '03',
-    title: 'Untitled / 03',
-    category: 'Interactive',
-    format: 'Interactive study',
-    tone: 'light',
-  },
-  {
-    id: '04',
-    title: 'Untitled / 04',
-    category: 'Moving image',
-    format: 'Motion study',
-    tone: 'dark',
-  },
-  {
-    id: '05',
-    title: 'Untitled / 05',
-    category: 'AI studies',
-    format: 'Visual experiment',
-    tone: 'blue',
-  },
-  {
-    id: '06',
-    title: 'Untitled / 06',
-    category: 'Interactive',
-    format: 'Interface study',
-    tone: 'dark',
-  },
-] as const;
+type Project = {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  note: string;
+  tags: readonly string[];
+  label: string;
+  status?: string;
+  noteHeading?: string;
+  repositoryUrl?: string;
+  siteHref?: string;
+  liveUrl?: string;
+  caseStudyHref?: string;
+  image?: { src: string; alt: string; width: number; height: number };
+};
 
-export const projects = [
+export const projects: readonly Project[] = [
   {
     id: '01',
-    title: 'Project / 01',
-    category: 'Independent project',
-    description: 'A place for your project story: the idea, the process, and what comes next.',
-    note: 'Project overview and product visuals will be added here.',
-    tags: ['Overview', 'Process', 'Product'],
-    label: 'PRODUCT PREVIEW COMING SOON',
+    title: 'Example Project',
+    category: 'Case study template',
+    description: 'An editable case study with overview, process, and outcome sections.',
+    note: 'Replace the sample narrative with the decisions and evidence behind your own project.',
+    tags: ['Overview', 'Process', 'Outcome'],
+    label: 'EXAMPLE PROJECT',
+    status: 'SAMPLE CONTENT',
+    caseStudyHref: '/projects/sample-project',
+    image: {
+      src: '/images/sample-film.svg',
+      alt: 'Abstract case study placeholder',
+      width: 1200,
+      height: 800,
+    },
   },
   {
     id: '02',
-    title: 'Project / 02',
-    category: 'Project placeholder',
-    description: 'Room for another independent idea.',
-    note: 'Project name, summary, role, and outcome are awaiting content.',
-    tags: ['Concept', 'Process'],
-    label: 'PROJECT MEDIA COMING SOON',
+    title: 'Interface Study',
+    category: 'Interaction demo',
+    description: 'Try the chapter transition and press feedback in an isolated demo.',
+    note: 'The same interaction components power the portfolio navigation.',
+    tags: ['Motion', 'Interaction'],
+    label: 'INTERFACE DEMO',
+    caseStudyHref: '/projects/interface-study',
   },
   {
     id: '03',
-    title: 'Project / 03',
-    category: 'Project placeholder',
-    description: 'Room for an interactive experiment.',
-    note: 'Project name, summary, role, and outcome are awaiting content.',
-    tags: ['Experiment', 'Interaction'],
-    label: 'PROJECT MEDIA COMING SOON',
+    title: 'Space Configurator',
+    category: 'Procedural 3D demo',
+    description: 'Adjust dimensions, finishes, and accessories in a working browser model.',
+    note: 'This bundled concept uses demonstration estimates. It is not a product for sale or a client case study.',
+    tags: ['Three.js', 'Procedural geometry'],
+    label: 'INTERACTIVE DEMO',
+    caseStudyHref: '/projects/space-configurator',
+    image: {
+      src: '/resources/projects/parametric-spaces/alcove.svg',
+      alt: 'Procedural garden room demonstration',
+      width: 1200,
+      height: 900,
+    },
   },
   {
     id: '04',
-    title: 'Project / 04',
+    title: 'Your Next Project',
     category: 'Project placeholder',
-    description: 'Room for what comes next.',
-    note: 'Project name, summary, role, and outcome are awaiting content.',
-    tags: ['Exploration', 'Process'],
-    label: 'PROJECT MEDIA COMING SOON',
+    description: 'Add another project here.',
+    note: 'Describe the idea, your role, and its current state.',
+    tags: ['Exploration'],
+    label: 'ADD YOUR MEDIA',
   },
-] as const;
+];

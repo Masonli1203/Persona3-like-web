@@ -1,1 +1,1 @@
-@AGENTS.md
+Follow [AGENTS.md](AGENTS.md) and [WRITING_STYLE.md](WRITING_STYLE.md).

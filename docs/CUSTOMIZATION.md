@@ -1,55 +1,29 @@
-# Customization / 修改说明
+# Customization
 
 ## Identity
 
-Edit `src/data/site.ts` first. The homepage name, wordmark, footer, module headers, About profile, clock label, and page metadata read from this file.
+Edit `src/data/site.ts` first. Its name and initials drive the homepage, shared navigation, transition labels, and page metadata. Keep the two name lines short and check both desktop and mobile layouts. The homepage artwork slot accepts a local image path; the bundled abstract SVG contains no portrait.
 
-`nameLines` supplies the two large homepage lines; keep them short enough to fit the identity column. `initials` should be two or three characters, since it also appears in the compact clock header. Check narrow phones and wide desktops after replacing either.
+Edit `src/data/profile.ts` for profile details. Set `email` to your address and `cv` to a public PDF path only when ready; blank values hide both links. Replace `portrait` with media you own. Update the introduction heading in the About page if your discipline differs from the example.
 
-The About education/experience entries are intentionally generic. Edit their structure in `src/app/(modules)/about/page.tsx` when you add real information. The CV button is disabled until you replace it with a real download link.
+## Creative media
 
-个人身份主要修改 `site.ts`；经历条目和 CV 链接在 About 页面中修改。较长的名字需要检查窄屏排版。
+Edit `src/data/creativeProjects.ts`. Category IDs determine routes. Each video entry can have `coverImage`, `videoSrc`, `previewVideo`, and a public `muxPlaybackId`. A playback ID takes precedence over a local video. Without either, the viewer shows a placeholder. No real playback IDs ship with this repository.
 
-## Chapters and work
+Place local videos under `public/media/` and reference them with paths such as `/media/film.mp4`. Preview clips are optional: they play only on supported pointer devices with motion enabled and stop when hidden. Gallery entries need `src`, `thumbnail`, `alt`, `width`, and `height`. The tiny SVG placeholders reuse their original files as thumbnails; for real photographs, generate smaller thumbnails with matching proportions.
 
-- `src/data/sections.ts`: homepage chapter labels, hover headlines, and descriptions.
-- `src/data/works.ts`: creative works, categories, and project details.
-- The creative filter labels live in `src/components/creative-gallery.tsx`; keep them consistent with work categories.
-- Project selection supports mouse hover, keyboard focus, and clicking.
+Category pages use `/creative/<category>`. Opening a work adds `?work=<slug>` for a shareable dialog. Canonical work routes redirect to that viewer; photography work routes include `/creative/photography/<slug>`.
 
-The three route IDs are intentionally fixed to `creative`, `projects`, and `about`. Adding a fourth route also requires updating `chapters` in `page-transition.tsx` and the chapter navigation/layout; it is not a data-only change.
+Public Mux playback does not need server credentials. Optional management credentials are documented in `.env.example`; put actual values in a local ignored environment file. The management client stays behind `server-only`. Never put tokens in data files or NEXT_PUBLIC variables. `npm run check:mux` performs an optional connection check. Adding Mux playback introduces external service requests only for configured videos.
 
-## Artwork and media
+## Projects
 
-The bundled abstract SVG is a generic placeholder and is included under the project MIT license. Replace it with your own artwork, then change `site.heroArtwork` to a path below `public/`.
+Edit `src/data/works.ts` and add a route under `src/app/(modules)/projects/`. The sample project demonstrates expandable images and a floating contents dock. Interface Study isolates the press/transition interaction. Space Configurator demonstrates procedural geometry, dimensions, finishes, and accessories without claiming any client history.
 
-- The default canvas is 1672 × 941.
-- Keep the left identity area and right navigation area visually quiet.
-- Desktop artwork position, aspect handling, and reverse parallax are controlled in `globals.css` and `home-prototype.tsx`.
-- Mobile/portrait backgrounds remain geometric by design.
-- `MediaPlaceholder` is the reusable slot for future images and video players.
-- No video service is configured. Store large video assets in suitable media hosting rather than Git history.
+The configurator uses `src/lib/alcove-config.ts` and `src/components/alcove/`. Its prices are demonstration values. After changing geometry, run `npm run preview:alcove` to refresh its SVG preview.
 
-背景图只在桌面横屏使用。更换图片后检查文字是否遮挡主体，以及左右区域的对比度。项目和作品媒体可以从 `MediaPlaceholder` 组件逐步替换。
+## Styling and verification
 
-## Palette and type
+Shared styles live in `src/app/globals.css`, `src/app/transitions.css`, and `src/app/(modules)/modules.css`. Creative and configurator styles use CSS modules. Fonts are local with license files beside them.
 
-Color variables live at the top of `src/app/globals.css`. `--text-micro`, `--text-small`, `--text-body`, and `--text-lead` are the shared fluid type scale. Avoid adding fixed tiny font sizes for metadata or squeezing text to fit: prefer wrapping or additional space.
-
-The clock's green phase and module backdrop share the midnight color variables. The chapter circle palette lives in `src/app/transitions.css`.
-
-## Motion
-
-- Homepage: the `spring` and `buttonSpring` settings plus local transforms in `home-prototype.tsx`.
-- Cursor: `ink-cursor.tsx`; the pointer follows immediately and only the decorative strokes trail.
-- Clock/fragment animation: `transition-clock.tsx`, `glass-geometry.ts`, `glass-sprites.ts`, and `transitions.css`.
-- Routing and phase timing: `page-transition.tsx`.
-- Circle rendering: `circle-overlay.tsx`.
-
-The Motion switch is shared during the current app session. Reduced-motion preferences and coarse/touch input retain their appropriate fallbacks. The switch is not stored across a full browser reload.
-
-Always check an Index-to-chapter transition, a chapter-to-chapter transition, returning to Index, browser history, keyboard navigation, and reduced motion after editing the shared transition code.
-
-## Browser tests
-
-Run a production build before `npm run test:e2e`. Playwright uses its installed Chromium by default. For local troubleshooting you may set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to an existing compatible Chromium browser; CI does not require that override.
+Run `npm run check`, `npm run build`, and `npm run test:e2e` before publishing. The starter privacy guard intentionally rejects populated email/playback IDs and raster media in src/public. Adapt that guard when adding your own content to a personal fork, while retaining secret and private-file checks. Do not weaken it in contributions to this generic starter.

@@ -221,3 +221,15 @@
 .page-stage[data-transition='circle'] .chapter-link[data-circle-source='true'] {
   z-index: 10001;
 }
+
+/* A single red-dominant accent acknowledges a press before the transition starts. */
+:root {
+  --press-red: #ff182b;
+  --press-cyan: #69dcff;
+}
+[data-press-feedback='true']:active [data-press-label] {
+  text-shadow:
+    0.09em 0.035em 0 var(--press-red),
+    -0.035em -0.015em 0 var(--press-cyan);
+  transition: none;
+}

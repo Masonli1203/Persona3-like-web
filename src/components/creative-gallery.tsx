@@ -1,56 +1,85 @@
 'use client';
+import { useRef, useState } from 'react';
+import { creativeCategories, categoryPath } from '@/data/creativeProjects';
+import { TransitionLink as Link, usePageTransition } from './page-transition';
+import Image from 'next/image';
+import styles from './creative/category-menu.module.css';
 
-import { useState } from 'react';
-import { creativeWorks } from '@/data/works';
-import { MediaPlaceholder } from './module-parts';
-
-const filters = ['All work', 'Moving image', 'AI studies', 'Interactive'] as const;
 export function CreativeGallery() {
-  const [filter, setFilter] = useState<string>('All work');
-  const visible = creativeWorks.filter((work) => filter === 'All work' || work.category === filter);
+  const [selected, setSelected] = useState<string>(creativeCategories[0].id);
+  const { motionOff, setMotionOff } = usePageTransition();
+  const category = creativeCategories.find((item) => item.id === selected)!;
+  const stage = useRef<HTMLDivElement>(null);
   return (
-    <section aria-label="Creative work gallery">
-      <div className="gallery-toolbar">
-        <div className="work-filters" role="group" aria-label="Filter creative work">
-          {filters.map((item) => (
-            <button key={item} onClick={() => setFilter(item)} aria-pressed={filter === item}>
-              {item}
-            </button>
-          ))}
-        </div>
-        <span className="micro work-count" role="status">
-          {String(visible.length).padStart(2, '0')} ENTRIES
-        </span>
-      </div>
-      <p className="draft-caption">
-        A collection taking shape. Titles and media are placeholders for now.
-      </p>
-      <div className="work-grid">
-        {visible.map((work) => (
-          <article className="work-card" key={work.id}>
-            <MediaPlaceholder code={`STUDY / ${work.id}`} tone={work.tone} />
-            <div className="work-caption">
-              <div>
-                <span className="micro">{work.category}</span>
-                <h2>{work.title}</h2>
-              </div>
-              <span className="micro work-id">/{work.id}</span>
-            </div>
-            <details className="work-notes">
-              <summary>
-                Study notes<span aria-hidden="true">+</span>
-              </summary>
-              <div>
-                <p>
-                  {work.format}. This space will hold the intention, process, and credits for the
-                  work.
-                </p>
-                <span className="micro">CONTENT TO BE ADDED</span>
-              </div>
-            </details>
-          </article>
+    <div
+      ref={stage}
+      className={styles.stage}
+      data-motion={motionOff ? 'off' : 'on'}
+      onPointerMove={(event) => {
+        if (
+          motionOff ||
+          event.pointerType !== 'mouse' ||
+          !window.matchMedia(
+            '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+          ).matches
+        )
+          return;
+        const rect = event.currentTarget.getBoundingClientRect();
+        event.currentTarget.style.setProperty(
+          '--pointer-x',
+          `${((event.clientX - rect.left) / rect.width - 0.5) * 14}px`,
+        );
+        event.currentTarget.style.setProperty(
+          '--pointer-y',
+          `${((event.clientY - rect.top) / rect.height - 0.5) * 10}px`,
+        );
+      }}
+      onPointerLeave={() => {
+        stage.current?.style.setProperty('--pointer-x', '0px');
+        stage.current?.style.setProperty('--pointer-y', '0px');
+      }}
+    >
+      <div className={styles.sweep} aria-hidden="true" />
+      <nav className={styles.menu} aria-label="Creative categories">
+        {creativeCategories.map((item) => (
+          <Link
+            key={item.id}
+            href={categoryPath(item.id)}
+            className={styles.entry}
+            data-selected={selected === item.id}
+            onPointerEnter={() => setSelected(item.id)}
+            onFocus={() => setSelected(item.id)}
+          >
+            <span className={styles.float}>
+              <span className={styles.face}>
+                <span className={styles.number}>{item.number}</span>
+                <span className={styles.title}>{item.title}</span>
+                <span className={styles.arrow} aria-hidden="true">
+                  ↗
+                </span>
+              </span>
+            </span>
+          </Link>
         ))}
+      </nav>
+      <div className={styles.preview} data-category={category.id} aria-hidden="true">
+        <div className={styles.previewFrame}>
+          <div key={category.id} className={styles.previewImage}>
+            <Image src={category.cover} alt="" fill quality={90} sizes="1280px" />
+          </div>
+        </div>
+        <span className={styles.previewNumber}>{category.number}</span>
+        <span className={styles.previewCaption}>{category.title}</span>
       </div>
-    </section>
+      <button
+        type="button"
+        className={styles.motionControl}
+        aria-pressed={!motionOff}
+        onClick={() => setMotionOff((value) => !value)}
+      >
+        {motionOff ? 'Motion off' : 'Motion on'}
+        <span aria-hidden="true">{motionOff ? '▷' : 'Ⅱ'}</span>
+      </button>
+    </div>
   );
 }

@@ -9,8 +9,7 @@ export default function CreativePage() {
       <ModuleHeading
         number="01"
         title="CREATIVE"
-        description="Images, experiments, and ideas that move."
-        note="THE VISUAL SIDE"
+        description="Film, 3D, AI experiments, and photography."
       />
       <CreativeGallery />
     </>

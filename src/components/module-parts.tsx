@@ -2,19 +2,13 @@ export function ModuleHeading({
   number,
   title,
   description,
-  note,
 }: {
   number: string;
   title: string;
   description: string;
-  note: string;
 }) {
   return (
     <header className="module-heading" data-chapter={number}>
-      <div className="heading-kicker micro">
-        <span>{number} / SELECTED PERSPECTIVES</span>
-        <span>{note}</span>
-      </div>
       <h1>
         {title}
         <span className="chapter-dot">.</span>

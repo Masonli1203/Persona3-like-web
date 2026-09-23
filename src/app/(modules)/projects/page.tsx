@@ -9,8 +9,7 @@ export default function ProjectsPage() {
       <ModuleHeading
         number="02"
         title="PROJECTS"
-        description="Independent ideas. Thought through, made real."
-        note="THE BUILT SIDE"
+        description="Web tools and interactive projects, with notes on how I built them."
       />
       <ProjectIndex />
     </>

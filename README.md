@@ -1,61 +1,49 @@
 # Persona3-like-web
 
-A portfolio template inspired by the visual rhythm of Persona 3: diagonal composition, oversized italic type, ink-like pointer feedback, and expressive page transitions.
+A reusable Persona-inspired portfolio with bold typography, animated chapter navigation, and editable example content.
 
-[中文说明](README.zh-CN.md) · [Customization](docs/CUSTOMIZATION.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
+[中文说明](README.zh-CN.md) · [Customization](docs/CUSTOMIZATION.md) · [Architecture](docs/ARCHITECTURE.md) · [MIT license](LICENSE)
 
 ![Homepage preview](docs/screenshots/home.png)
 
-[Chapter preview](docs/screenshots/creative.png) · [Mobile preview](docs/screenshots/mobile.png)
+## Included in 0.2
 
-## What is included
+- Homepage parallax, magnetic navigation, animated manifesto, and section previews.
+- Persistent ink cursor, clock/glass transitions, press feedback, and floating chapter navigation.
+- Four Creative categories with dedicated routes, shareable work dialogs, optional video previews, and a photograph viewer with next/previous controls and scroll restoration.
+- Local video and optional Mux playback. No playback IDs, API credentials, or personal videos are bundled.
+- Project previews, an editable case study, a transition demo, and a working Three.js configurator with demonstration estimates.
+- A profile page with education, experience, projects, skills, and recognition placeholders. Email and CV links remain hidden until configured.
+- Local fonts, neutral SVG artwork and favicon, responsive layouts, and reduced-motion support.
 
-- **Index:** mouse parallax, title tilt, magnetic links, comic-style hover expansion, and live section previews.
-- **Creative:** filterable work cards and expandable study notes.
-- **Projects:** an interactive project list and preview panel.
-- **About:** editable profile, background, and interests.
-- **Shared cursor:** instant pointer tracking, trailing ink strokes, and interactive hover feedback across all routes.
-- **Transitions:** an 11-to-12 clock and dissolving glass effect when entering a chapter from Index; circular wipes between chapters.
-- **Responsive behavior:** fluid typography, stable scrollbar space, keyboard focus, touch layouts, and reduced-motion support.
-
-Built with **Next.js App Router, TypeScript, Tailwind CSS, and Framer Motion**. Animations use CSS, SVG, and small canvas sprites; there is no Three.js or WebGL dependency.
-
-This is a frontend template. The example works, media, biography, and CV are placeholders. It has no authentication, CMS, analytics, video service, or backend integration.
+Built with Next.js App Router, React, TypeScript, Tailwind CSS, Framer Motion, and Three.js. Heavy 3D and Mux playback code loads on demand.
 
 ## Run locally
 
-Use Node.js **24** and npm. Node.js 22 is also allowed by the package requirements. No environment variables or API keys are needed.
+Use Node.js 24 and npm (Node.js 22 or newer is supported).
 
 ```sh
-git clone https://github.com/Masonli1203/Persona3-like-web.git
-cd Persona3-like-web
 npm ci
 npm run dev
 ```
 
-Open [http://127.0.0.1:3000](http://127.0.0.1:3000).
+Open [localhost](http://127.0.0.1:3000). No environment variables are needed for the starter. To create an independent portfolio, use GitHub's **Use this template** action; to contribute changes, fork this repository.
 
-If you want your own independent portfolio, choose **Use this template** on GitHub. If you want to help develop this shared project, **fork it and submit a pull request** instead; a template copy starts a separate project history. See [GitHub's template documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository).
+## Customize
 
-## Make it yours
+| File                           | Purpose                                                        |
+| ------------------------------ | -------------------------------------------------------------- |
+| `src/data/site.ts`             | Shared name, initials, title, location, metadata, hero artwork |
+| `src/data/profile.ts`          | Biography, experience, education, optional email and CV        |
+| `src/data/sections.ts`         | Homepage previews and chapter labels                           |
+| `src/data/creativeProjects.ts` | Categories, media, photo series, optional playback IDs         |
+| `src/data/works.ts`            | Project list and case study links                              |
+| `src/app/(modules)/projects/`  | Example project pages                                          |
+| `public/images/`               | Neutral placeholder artwork                                    |
 
-Start with these files:
+See [customization instructions](docs/CUSTOMIZATION.md) for video setup and adding content.
 
-| File                                 | What to change                                                |
-| ------------------------------------ | ------------------------------------------------------------- |
-| `src/data/site.ts`                   | Name, initials, title, biography, interests, and artwork path |
-| `src/data/sections.ts`               | Chapter labels and homepage hover descriptions                |
-| `src/data/works.ts`                  | Creative work and project examples                            |
-| `public/images/hero-placeholder.svg` | Abstract desktop artwork placeholder                          |
-| `src/app/globals.css`                | Colors, typography, homepage layout, pointer feedback         |
-| `src/app/(modules)/modules.css`      | Chapter layout and controls                                   |
-| `src/app/transitions.css`            | Transition appearance and timing                              |
-
-The default text is generic. Personal portraits, photographs, local design archives, credentials, and machine-specific verification files from the original portfolio are excluded.
-
-The desktop artwork slot currently uses a **1672 × 941** canvas, with the main artwork between the left identity column and the right navigation. Portrait/mobile layouts use the existing geometric background. See [customization notes](docs/CUSTOMIZATION.md) before replacing the artwork or using a long name.
-
-## Checks and tests
+## Verify
 
 ```sh
 npm run check
@@ -64,48 +52,18 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The browser tests start a local **production** server on port **3100**, so build first. On Linux, `npx playwright install --with-deps chromium` also installs browser system dependencies. The development server on port 3000 can remain open.
+The check command runs lint, TypeScript, formatting, the starter privacy guard, and unit tests. Browser tests use a production server on port 3100. GitHub Actions runs the same checks. On Linux use `npx playwright install --with-deps chromium`.
 
-| Command            | Purpose                                                        |
-| ------------------ | -------------------------------------------------------------- |
-| `npm run dev`      | Local development                                              |
-| `npm run build`    | Production build only                                          |
-| `npm run start`    | Serve a completed build locally                                |
-| `npm run check`    | Lint, TypeScript, and formatting checks                        |
-| `npm run format`   | Format source and documentation                                |
-| `npm run test:e2e` | Browser navigation, interaction, cursor, and responsive checks |
-| `npm test`         | Checks, build, and browser tests together                      |
+Other commands: `npm run format`, `npm run test:unit`, `npm run preview:alcove`, and optional `npm run check:mux`.
 
-GitHub Actions runs the checks, build, and browser tests for pushes and pull requests. **No deployment workflow or hosting integration is included.**
+## Privacy and media
 
-## Project map
+This starter contains generic text and original geometric placeholders. Personal portraits, resumes, photographs, films, screenshots of private projects, playback IDs, environment files, and local work archives are excluded. The source portfolio's Git history is not imported. Original public repository history and required license attribution remain intact.
 
-```text
-src/
-  app/
-    page.tsx                 # Index
-    (modules)/               # Creative, Projects, About
-    globals.css
-    transitions.css
-  components/
-    home-prototype.tsx
-    module-shell.tsx
-    page-transition.tsx      # Shared routing and transition lifecycle
-    ink-cursor.tsx           # Shared cursor; mounted outside route content
-    transition-clock.tsx
-    circle-overlay.tsx
-    glass-geometry.ts
-    glass-sprites.ts
-  data/                      # Editable example content
-public/images/               # Generic SVG artwork
-tests/                       # Playwright browser tests
-docs/                        # Customization, architecture, screenshots
-```
-
-Read [architecture notes](docs/ARCHITECTURE.md) for the cursor and transition lifecycle, and [the roadmap](docs/ROADMAP.md) for possible contributions.
+The privacy guard is intended for contributions to this generic template. Update it deliberately in your personal fork when adding your own email and media. It is a regression check, not a substitute for inspecting assets and Git diffs.
 
 ## License and inspiration
 
-The code and bundled generic SVG artwork are available under the [MIT license](LICENSE). Dependency licenses remain their own.
+Code and generic SVG artwork use the [MIT license](LICENSE). Bundled fonts retain their OFL notices in `src/app/fonts/`; dependency licenses remain their own.
 
-This is an independent, unofficial project. Persona and Persona 3 are referenced as design inspiration; this repository includes no official game art, music, logos, or fonts and has no affiliation with ATLUS or SEGA. Add only media you have permission to distribute.
+An independent, unofficial project inspired by Persona's visual language. No official game artwork, music, logos, or fonts are included, and there is no affiliation with ATLUS or SEGA. Only add media you have permission to distribute.

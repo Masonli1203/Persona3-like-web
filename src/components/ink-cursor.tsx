@@ -84,6 +84,10 @@ function CursorLayer() {
       setInteractive(!!control && !control.matches(':disabled, [aria-disabled="true"]'));
     }
     function over(event: globalThis.PointerEvent) {
+      if (event.target instanceof Element && event.target.closest('dialog:modal')) {
+        if (visible) hide();
+        return;
+      }
       if (visible && event.pointerType === 'mouse') updateInteractive(event.target);
     }
     function scroll() {
@@ -92,6 +96,11 @@ function CursorLayer() {
     function move(event: globalThis.PointerEvent) {
       if (event.pointerType !== 'mouse') {
         hide();
+        return;
+      }
+      // A modal uses a native SVG cursor: don't animate five hidden trails under it.
+      if (event.target instanceof Element && event.target.closest('dialog:modal')) {
+        if (visible) hide();
         return;
       }
       x.set(event.clientX);

@@ -9,9 +9,9 @@
   --midnight-green: #233c17;
   --midnight-dark: #101e0d;
 }
-/* Shared type scale: honor browser text preferences and grow with width, not viewport height. */
+/* Approved metadata size stays at 15 CSS px across viewports; browser zoom still scales it. */
 :root {
-  --text-micro: clamp(0.8125rem, calc(0.69rem + 0.14vw), 1rem);
+  --text-micro: 15px;
   --text-small: clamp(0.875rem, calc(0.75rem + 0.2vw), 1.125rem);
   --text-body: clamp(1rem, calc(0.875rem + 0.15vw), 1.25rem);
   --text-lead: clamp(1.125rem, calc(1rem + 0.25vw), 1.5rem);
@@ -103,10 +103,11 @@ a:focus-visible {
 .preview-meta,
 .preview-note,
 .footer {
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-plex-mono), monospace;
   font-size: var(--text-micro);
-  font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0;
+  font-weight: 600;
+  line-height: 1.6;
 }
 .edition span {
   margin: 0 0.875rem;
@@ -189,7 +190,7 @@ h1 > span {
   right: 5px;
   bottom: 0.5625rem;
   writing-mode: vertical-rl;
-  letter-spacing: 3px;
+  letter-spacing: 0;
   font-size: var(--text-micro);
 }
 .intro {
@@ -258,13 +259,15 @@ h1 > span {
   align-items: center;
   justify-content: space-between;
   text-align: center;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-plex-mono), monospace;
   font-size: var(--text-micro);
   line-height: 1.6;
-  letter-spacing: 2px;
+  letter-spacing: 0;
+  font-weight: 600;
 }
 .media-center strong {
-  font-size: var(--text-small);
+  font-size: var(--text-micro);
+  font-weight: 600;
 }
 .frame-cross {
   font-size: 1.25rem;
@@ -352,7 +355,7 @@ nav {
 }
 .section-subtitle {
   font-size: var(--text-micro);
-  letter-spacing: 1px;
+  letter-spacing: 0;
 }
 .section-arrow {
   margin-left: auto;
@@ -397,7 +400,7 @@ nav {
   margin-top: 0.875rem;
   font-size: var(--text-micro);
   color: #a8abb6;
-  letter-spacing: 0.2px;
+  letter-spacing: 0;
 }
 .footer {
   margin-top: auto;
@@ -408,7 +411,7 @@ nav {
   font-size: var(--text-micro);
 }
 .footer-manifesto {
-  letter-spacing: 2px;
+  letter-spacing: 0;
 }
 .footer-index {
   color: var(--muted);
@@ -423,6 +426,23 @@ nav {
   html.ink-cursor-ready body,
   html.ink-cursor-ready body * {
     cursor: none !important;
+  }
+  /* Native modal dialogs sit above every document z-index. Let the browser draw
+     the same pointer there, without a JS-driven trail behind the full-screen layer. */
+  html:has(.cursor-layer) body dialog:modal,
+  html:has(.cursor-layer) body dialog:modal * {
+    cursor:
+      url('/images/ink-pointer.svg') 2 2,
+      auto !important;
+  }
+  html:has(.cursor-layer) body dialog:modal :is(a[href], button, [role='button']),
+  html:has(.cursor-layer) body dialog:modal :is(a[href], button, [role='button']) * {
+    cursor:
+      url('/images/ink-pointer-active.svg') 2 2,
+      pointer !important;
+  }
+  html:has(dialog:modal) .cursor-layer {
+    display: none;
   }
 }
 .skip-link {
@@ -459,7 +479,7 @@ nav {
   }
   .section-subtitle {
     font-size: var(--text-micro);
-    letter-spacing: 0.2px;
+    letter-spacing: 0;
   }
   .section-preview {
     margin-left: 0.75rem;
@@ -475,7 +495,7 @@ nav {
     margin-left: 0.625rem;
   }
   .footer-manifesto {
-    letter-spacing: 0.5px;
+    letter-spacing: 0;
   }
 }
 @media (max-width: 700px) {
@@ -487,7 +507,7 @@ nav {
   }
   .edition {
     font-size: var(--text-micro);
-    letter-spacing: 0.2px;
+    letter-spacing: 0;
   }
   .edition span {
     margin: 0 4px;
@@ -524,7 +544,7 @@ nav {
   .vertical-label {
     right: -1.125rem;
     font-size: var(--text-micro);
-    letter-spacing: 2px;
+    letter-spacing: 0;
   }
   .intro {
     margin-top: 1.75rem;
@@ -557,7 +577,7 @@ nav {
   }
   .section-subtitle {
     font-size: var(--text-micro);
-    letter-spacing: 0.6px;
+    letter-spacing: 0;
   }
   .section-arrow {
     font-size: 1.875rem;
@@ -821,12 +841,12 @@ nav {
   }
 }
 
-/* Readable detail text grows with the viewport; native CSS responds immediately to resize. */
+/* Metadata keeps the approved size while body copy retains the responsive scale. */
 .edition,
 .motion-toggle,
 .eyebrow,
 .explore-heading {
-  font-size: var(--text-small);
+  font-size: var(--text-micro);
 }
 .media-top,
 .media-bottom,
@@ -837,13 +857,14 @@ nav {
   font-size: var(--text-micro);
 }
 .section-subtitle {
-  letter-spacing: 0.035em;
+  letter-spacing: 0;
 }
 .media-center {
   font-size: var(--text-micro);
 }
 .media-center strong {
-  font-size: var(--text-body);
+  font-size: var(--text-micro);
+  font-weight: 600;
 }
 .intro p {
   font-size: var(--text-body);
@@ -973,7 +994,7 @@ nav {
   }
   .portfolio .eyebrow {
     font-size: var(--text-micro);
-    letter-spacing: 0.075em;
+    letter-spacing: 0;
     gap: 0.5rem;
   }
   .portfolio .tiny-cross {
@@ -1002,7 +1023,7 @@ nav {
     position: static;
     writing-mode: horizontal-tb;
     font-size: var(--text-micro);
-    letter-spacing: 0.2em;
+    letter-spacing: 0;
     margin-top: 0.55rem;
   }
   .portfolio .intro {
@@ -1213,6 +1234,18 @@ nav {
   inset: -12px;
 }
 
+/* Reserve the tallest chapter at each width so changing copy cannot resize the portrait. */
+.section-preview-copy {
+  display: grid;
+}
+.section-preview-panel {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.section-preview-panel[aria-hidden='true'] {
+  visibility: hidden;
+}
+
 /* Body copy stays readable even when the desktop identity column is narrow. */
 .portfolio .intro p,
 .portfolio .section-preview p {
@@ -1247,7 +1280,7 @@ nav {
     position: static;
     writing-mode: horizontal-tb;
     margin-top: 1rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0;
   }
 }
 /* Leave room for readable three-line captions while neighboring cards compress. */
@@ -1258,4 +1291,238 @@ nav {
   .portfolio .section-slot {
     min-height: 6.25rem;
   }
+}
+
+/* Animate the preview's actual size so the identity copy follows every frame. */
+@media (min-width: 701px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .portfolio.pointer-enhanced .media-frame {
+    transition:
+      width 360ms cubic-bezier(0.22, 0.68, 0.2, 1),
+      max-width 360ms cubic-bezier(0.22, 0.68, 0.2, 1),
+      border-color 260ms ease;
+  }
+  .portfolio.pointer-enhanced .index-artwork-plane {
+    will-change: transform;
+  }
+  .portfolio.has-media-emphasis .media-frame {
+    width: 100%;
+    max-width: 28rem;
+    border-color: #164bfa;
+    box-shadow:
+      0 18px 45px #06194325,
+      0 0 0 1px #164bfa20;
+    z-index: 4;
+  }
+}
+@media (min-width: 900px) and (orientation: landscape) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .portfolio.has-media-emphasis .media-frame {
+    width: 116%;
+    max-width: 27rem;
+  }
+}
+
+/* The manifesto inherits the media preview's footprint, growth and parallax. */
+.portfolio .media-frame.manifesto-frame {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--ink);
+  min-height: 0;
+  pointer-events: none;
+}
+.portfolio .manifesto-frame::before,
+.portfolio .manifesto-frame::after {
+  content: none;
+}
+.manifesto-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+.manifesto-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.manifesto-row {
+  fill: var(--ink);
+  font-size: 150px;
+  font-weight: 400;
+}
+.manifesto-row.is-sliced {
+  fill: #164bfa;
+}
+.slice-lower {
+  transform: translateX(3px);
+}
+.slice-ticks {
+  fill: none;
+  stroke: #00d9e8;
+  stroke-width: 4;
+}
+.manifesto-stage[data-animated='true'] .manifesto-row {
+  animation: manifesto-arrive 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.manifesto-stage[data-animated='true'] .slice-upper {
+  animation: slice-upper-in 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.manifesto-stage[data-animated='true'] .slice-lower {
+  animation: slice-lower-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.manifesto-stage[data-animated='true'] .slice-ticks {
+  animation: slice-ticks-in 540ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes manifesto-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slice-upper-in {
+  0% {
+    transform: translateX(-52px);
+  }
+  55% {
+    transform: translateX(7px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes slice-lower-in {
+  0% {
+    transform: translateX(65px);
+  }
+  55% {
+    transform: translateX(-8px);
+  }
+  100% {
+    transform: translateX(3px);
+  }
+}
+@keyframes slice-ticks-in {
+  from {
+    opacity: 0;
+    transform: translateX(-65px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* The compact layout has a blue field: give the same lettering a paper ground. */
+@media (max-width: 899px), (orientation: portrait) {
+  .portfolio .media-frame.manifesto-frame {
+    background: #fcfcfc;
+    padding: 0.65rem;
+  }
+}
+
+/* Keep homepage copy readable independently of the portrait's crop and parallax. */
+.portfolio .section-preview {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  width: min(100%, 34rem);
+  justify-self: end;
+  border: 0;
+  margin: 2.5rem 0 1rem auto;
+  padding: 1.5rem clamp(1.25rem, 2vw, 2rem);
+  color: var(--paper);
+}
+.portfolio .section-preview::before {
+  content: '';
+  position: absolute;
+  inset: -1.5rem -0.85rem -1.5rem -2.5rem;
+  z-index: -1;
+  background: url('/images/preview-ink.svg?v=2') center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.portfolio .section-preview .preview-meta {
+  flex-wrap: wrap;
+  color: #c6d8ff;
+}
+.portfolio .section-preview p {
+  color: var(--paper);
+}
+.portfolio .section-preview .preview-note {
+  color: #c6d8ff;
+}
+.portfolio .footer {
+  position: relative;
+  isolation: isolate;
+  padding: 1rem clamp(1rem, 2vw, 2rem);
+  background: none;
+  border: 0;
+  color: var(--paper);
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+.portfolio .footer > span:first-child {
+  color: #000;
+}
+.portfolio .footer-manifesto {
+  color: #fff;
+}
+/* In narrow landscape windows, give the preview its own row below both columns. */
+@media (min-width: 900px) and (orientation: landscape) and (max-aspect-ratio: 3/2) {
+  .portfolio .hero-grid {
+    row-gap: 2.5rem;
+  }
+  .portfolio .identity {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .portfolio .explore {
+    display: contents;
+  }
+  .portfolio .section-menu {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+  .portfolio .section-preview {
+    grid-column: 1/-1;
+    grid-row: 2;
+    margin: 0 0 1rem;
+    text-align: left;
+    padding: 1.5rem 1.75rem;
+  }
+  .portfolio .section-preview .preview-meta {
+    justify-content: space-between;
+  }
+  .portfolio .section-preview p {
+    max-width: 48ch;
+    margin-left: 0;
+  }
+}
+@media (max-width: 560px) {
+  .portfolio .section-preview {
+    padding: 1.25rem;
+  }
+  .portfolio .section-preview::before {
+    inset: -1.5rem -0.7rem -1.5rem -1.5rem;
+  }
+}
+
+.section-preview-copy {
+  position: relative;
+  overflow: hidden;
+}
+.section-preview-measure {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  min-width: 0;
+}
+.section-preview-slide {
+  position: absolute;
+  inset: 0;
 }
