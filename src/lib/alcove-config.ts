@@ -29,6 +29,10 @@ export const FINISHES = {
   chalk: { label: 'Chalk', color: '#d9d4c5' },
   clay: { label: 'Clay', color: '#9f5945' },
 } as const;
+export const ACCESSORY_PRICES = {
+  heater: 280,
+  light: 160,
+} as const;
 
 export function normalizeConfig(config: AlcoveConfig): AlcoveConfig {
   const snap = (value: number, min: number, max: number, step: number) =>
@@ -39,9 +43,14 @@ export function normalizeConfig(config: AlcoveConfig): AlcoveConfig {
     );
   return {
     ...config,
-    width: snap(config.width, 2.4, 4.8, 0.1),
-    depth: snap(config.depth, 2, 3.6, 0.1),
-    height: snap(config.height, 2.2, 3, 0.1),
+    width: snap(config.width, DIMENSIONS.width.min, DIMENSIONS.width.max, DIMENSIONS.width.step),
+    depth: snap(config.depth, DIMENSIONS.depth.min, DIMENSIONS.depth.max, DIMENSIONS.depth.step),
+    height: snap(
+      config.height,
+      DIMENSIONS.height.min,
+      DIMENSIONS.height.max,
+      DIMENSIONS.height.step,
+    ),
     angle: snap(config.angle, 0, 65, 1),
     finish: config.finish in FINISHES ? config.finish : 'graphite',
     heater: Boolean(config.heater),
@@ -75,8 +84,8 @@ export function quoteFor(config: AlcoveConfig) {
       amount: Math.round(c.width * c.depth * 115 + (c.width - 0.4) * 145),
     },
     { label: 'Timber canopy', amount: Math.round(layout.roofCount * (c.width - 0.1) * 18) },
-    { label: 'Radiant heater', amount: c.heater ? 280 : 0 },
-    { label: 'Linear light', amount: c.light ? 160 : 0 },
+    { label: 'Radiant heater', amount: c.heater ? ACCESSORY_PRICES.heater : 0 },
+    { label: 'Linear light', amount: c.light ? ACCESSORY_PRICES.light : 0 },
   ];
   return { items, total: items.reduce((sum, item) => sum + item.amount, 0) };
 }

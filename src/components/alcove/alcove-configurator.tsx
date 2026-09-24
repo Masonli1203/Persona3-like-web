@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import {
+  ACCESSORY_PRICES,
   DEFAULT_CONFIG,
   DIMENSIONS,
   FINISHES,
@@ -347,7 +348,7 @@ export function AlcoveConfigurator() {
                 <strong>Heater</strong>
                 <small>Suspended radiant panel</small>
               </span>
-              <span>+{formatPrice(280)}</span>
+              <span>+{formatPrice(ACCESSORY_PRICES.heater)}</span>
             </label>
             <label className={s.option}>
               <input
@@ -359,7 +360,7 @@ export function AlcoveConfigurator() {
                 <strong>Light</strong>
                 <small>Warm linear canopy light</small>
               </span>
-              <span>+{formatPrice(160)}</span>
+              <span>+{formatPrice(ACCESSORY_PRICES.light)}</span>
             </label>
           </fieldset>
           <div className={s.quote}>
