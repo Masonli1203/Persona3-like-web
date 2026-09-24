@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { projects } from '@/data/works';
-import { MediaPlaceholder } from './module-parts';
-import { MediaFocus } from './media-focus';
-import { TransitionLink } from './page-transition';
+import { projects } from '@/data/projects';
+import { MediaPlaceholder } from '../../components/ui/media-placeholder';
+import { MediaFocus } from '../../components/ui/media-focus';
+import { TransitionLink } from '../navigation/page-transition';
 
 export function ProjectIndex() {
   const [selected, setSelected] = useState(0);

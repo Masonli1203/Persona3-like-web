@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { access } from 'node:fs/promises';
-import { creativeCatalog, createCreativeCatalog } from '../src/data/creativeProjects.ts';
+import { creativeCatalog, createCreativeCatalog } from '../src/features/creative/catalog.ts';
 
 const creativeCategories = creativeCatalog.categories;
 const creativeProjects = creativeCategories.flatMap((category) =>

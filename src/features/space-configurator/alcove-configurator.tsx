@@ -13,7 +13,7 @@ import {
   normalizeConfig,
   quoteFor,
   type AlcoveConfig,
-} from '@/lib/alcove-config';
+} from './alcove-config';
 import type { SceneController, View } from './alcove-scene';
 import s from './alcove.module.css';
 

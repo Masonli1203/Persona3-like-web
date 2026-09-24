@@ -10,7 +10,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from 'react';
-import { usePageTransition } from './page-transition';
+import { usePageTransition } from '../../features/navigation/page-transition';
 
 const focusQuery = '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
 function subscribe(notify: () => void) {

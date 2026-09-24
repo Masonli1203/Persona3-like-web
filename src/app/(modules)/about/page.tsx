@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { site } from '@/data/site';
 import Image from 'next/image';
-import { ModuleHeading } from '@/components/module-parts';
-import { MediaFocus } from '@/components/media-focus';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { MediaFocus } from '@/components/ui/media-focus';
 import { profile } from '@/data/profile';
-import { getProject } from '@/data/works';
-import { TransitionLink } from '@/components/page-transition';
+import { getProject } from '@/features/projects/catalog';
+import { TransitionLink } from '@/features/navigation/page-transition';
 
 export const metadata: Metadata = {
   title: `About — ${site.name}`,
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <ModuleHeading
+      <SectionHeading
         number="03"
         title="ABOUT"
         description="AI, visual effects, and interactive experiences."

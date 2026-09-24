@@ -1,11 +1,11 @@
 'use client';
 import { useRef, useState } from 'react';
-import { creativeCatalog } from '@/data/creativeProjects';
-import { TransitionLink as Link, usePageTransition } from './page-transition';
+import { creativeCatalog } from './catalog';
+import { TransitionLink as Link, usePageTransition } from '../navigation/page-transition';
 import Image from 'next/image';
-import styles from './creative/category-menu.module.css';
+import styles from './category-menu.module.css';
 
-export function CreativeGallery() {
+export function CategoryMenu() {
   const [selected, setSelected] = useState<string>(creativeCatalog.categories[0].id);
   const { motionOff, setMotionOff } = usePageTransition();
   const category = creativeCatalog.categories.find((item) => item.id === selected)!;

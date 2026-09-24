@@ -1,6 +1,6 @@
-import { ModuleShell } from '@/components/module-shell';
-import './modules.css';
+import { ChapterShell } from '@/components/layout/chapter-shell';
+import '../../components/layout/chapters.css';
 
 export default function ModulesLayout({ children }: { children: React.ReactNode }) {
-  return <ModuleShell>{children}</ModuleShell>;
+  return <ChapterShell>{children}</ChapterShell>;
 }

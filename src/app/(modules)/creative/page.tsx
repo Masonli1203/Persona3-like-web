@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
 import { site } from '@/data/site';
-import { ModuleHeading } from '@/components/module-parts';
-import { CreativeGallery } from '@/components/creative-gallery';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { CategoryMenu } from '@/features/creative/category-menu';
 export const metadata: Metadata = { title: `Creative — ${site.name}` };
 export default function CreativePage() {
   return (
     <>
-      <ModuleHeading
+      <SectionHeading
         number="01"
         title="CREATIVE"
         description="Film, 3D, AI experiments, and photography."
       />
-      <CreativeGallery />
+      <CategoryMenu />
     </>
   );
 }

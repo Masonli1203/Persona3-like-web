@@ -18,6 +18,7 @@ If you want to contribute improvements back to this project, use a **fork**, not
 ## Design and code conventions
 
 - Keep reusable identity and copy in `src/data/`.
+- Keep dedicated code and styles in their `src/features/` directory. Shared layout and UI belong in `src/components/layout/` and `src/components/ui/`. Routes compose these modules; do not import route implementation from feature or shared code. See [the source layout](docs/ARCHITECTURE.md#source-layout).
 - Keep the shared cursor in the app-level transition provider; route changes must not unmount it.
 - Preserve keyboard operation, focus visibility, readable small-screen text, and reduced-motion behavior.
 - Preserve the distinction between the Index clock transition and the shorter chapter-to-chapter circle transition.

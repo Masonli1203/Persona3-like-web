@@ -11,12 +11,9 @@ import {
   type ReactNode,
 } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import {
-  creativeCatalog,
-  type CreativeCategory,
-  type CreativeProject,
-} from '@/data/creativeProjects';
-import { MuxVideoPlayer } from '@/components/media/MuxVideoPlayer';
+import { creativeCatalog } from './catalog';
+import { type CreativeCategory, type CreativeProject } from '@/data/creative';
+import { MuxVideoPlayer } from './mux-video-player';
 import { FullPhoto, PhotoThumbnail } from './photo-media';
 import styles from './creative.module.css';
 

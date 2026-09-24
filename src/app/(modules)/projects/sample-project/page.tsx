@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { site } from '@/data/site';
-import { getProject } from '@/data/works';
-import { ModuleHeading } from '@/components/module-parts';
-import { ExpandableImage } from '@/components/expandable-image';
-import { CaseContentsDock } from '@/components/case-contents-dock';
-import '../case-study.css';
+import { getProject } from '@/features/projects/catalog';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { ExpandableImage } from '@/components/ui/expandable-image';
+import { CaseContentsDock } from '@/features/projects/case-contents-dock';
+import '../../../../features/projects/case-study.css';
 const project = getProject('sample-project');
 const description = 'A case study structure ready for your own content.';
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <article className="project-case template-case">
-      <ModuleHeading number="02" title={project.title.toUpperCase()} description={description} />
+      <SectionHeading number="02" title={project.title.toUpperCase()} description={description} />
       <nav id="case-contents" className="template-case-contents" aria-label="Case study sections">
         <a href="#overview">Overview</a>
         <a href="#process">Process</a>

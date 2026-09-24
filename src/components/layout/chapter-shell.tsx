@@ -1,12 +1,15 @@
 'use client';
 
-import { TransitionLink as Link, usePageTransition } from './page-transition';
+import {
+  TransitionLink as Link,
+  usePageTransition,
+} from '../../features/navigation/page-transition';
 import { site } from '@/data/site';
 import { usePathname } from 'next/navigation';
-import { MediaFocusProvider } from './media-focus';
-import { ChapterNavigation } from './chapter-navigation';
+import { MediaFocusProvider } from '../ui/media-focus';
+import { ChapterNavigation } from '../../features/navigation/chapter-navigation';
 
-export function ModuleShell({ children }: { children: React.ReactNode }) {
+export function ChapterShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const isCaseStudy = path.startsWith('/projects/');
   const isCreativeCategory = path.startsWith('/creative/');

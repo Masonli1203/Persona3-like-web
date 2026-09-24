@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { getProject, projects } from '../src/data/works';
+import { getProject } from '../src/features/projects/catalog';
+import { projects } from '../src/data/projects';
 import { profile } from '../src/data/profile';
 import { site } from '../src/data/site';
 

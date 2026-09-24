@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { TransitionLink } from './page-transition';
+import { TransitionLink } from '../navigation/page-transition';
 
 type Entry = { id: string; label: string };
 export function CaseContentsDock({ sourceId, entries }: { sourceId: string; entries: Entry[] }) {

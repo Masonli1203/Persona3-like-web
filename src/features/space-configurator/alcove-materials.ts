@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { FINISHES, type Finish, type PartMaterial } from '@/lib/alcove-config';
+import { FINISHES, type Finish, type PartMaterial } from './alcove-config';
 
 /** Small deterministic texture tiles, generated once. No image requests or texture assets. */
 function surfaceTexture(kind: 'timber' | 'linen' | 'stone') {

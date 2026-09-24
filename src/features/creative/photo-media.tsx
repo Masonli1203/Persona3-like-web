@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState, type Ref } from 'react';
-import type { GalleryImage } from '@/data/creativeProjects';
+import type { GalleryImage } from '@/data/creative';
 import styles from './creative.module.css';
 
 export function PhotoThumbnail({

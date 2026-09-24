@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { buildAlcove, FINISHES, type AlcoveConfig, type Part } from '@/lib/alcove-config';
+import { buildAlcove, FINISHES, type AlcoveConfig, type Part } from './alcove-config';
 import { createAlcoveMaterials } from './alcove-materials';
 
 export type View = 'perspective' | 'front' | 'plan';

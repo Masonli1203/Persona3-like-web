@@ -1,8 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { creativeCatalog, type CreativeCategory } from '@/data/creativeProjects';
-import { usePageTransition } from '@/components/page-transition';
+import { creativeCatalog } from './catalog';
+import { type CreativeCategory } from '@/data/creative';
+import { usePageTransition } from '@/features/navigation/page-transition';
 import { CreativeVisual } from './creative-visual';
 import { CreativeViewingSession, CreativeWorkLink } from './viewing-session';
 import styles from './creative.module.css';

@@ -7,9 +7,9 @@ import localFont from 'next/font/local';
 import { useEffect, useState, useSyncExternalStore, type PointerEvent } from 'react';
 import { sections } from '@/data/sections';
 
-import { TransitionLink, usePageTransition } from './page-transition';
+import { TransitionLink, usePageTransition } from '../navigation/page-transition';
 const MotionLink = motion.create(TransitionLink);
-const manifestoFont = localFont({ src: '../app/fonts/anton-regular.ttf', display: 'swap' });
+const manifestoFont = localFont({ src: '../../assets/fonts/anton-regular.ttf', display: 'swap' });
 
 const manifestoCopy = [
   ['ALWAYS', 'CURIOUS.'],
@@ -155,7 +155,7 @@ function SectionLink({
   );
 }
 
-export function HomePrototype() {
+export function HomePage() {
   const [{ index: previewIndex, direction }, setPreview] = useState({ index: 0, direction: 1 });
   const selectPreview = (index: number) =>
     setPreview((previous) =>

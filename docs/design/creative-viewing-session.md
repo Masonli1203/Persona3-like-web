@@ -39,7 +39,7 @@ Browser tests exercise the same seam as visitors through work links, viewer cont
 
 Three browser scenarios were added and passed against the previous implementation before consolidation. They cover work history, series-position lifetime, and externally opened work links, and remain the viewing module's test surface alongside the existing browser tests.
 
-After consolidation, `npm test` passed: lint, type checking, formatting, the privacy guard, 7 unit tests, the production build, and 11 browser tests. Separate Standards and Spec reviews reported no findings. The viewing implementation is in `src/components/creative/viewing-session.tsx`; photo loading and retries remain in `src/components/creative/photo-media.tsx`.
+After consolidation, `npm test` passed: lint, type checking, formatting, the privacy guard, 7 unit tests, the production build, and 11 browser tests. Separate Standards and Spec reviews reported no findings. The viewing implementation is in `src/features/creative/viewing-session.tsx`; photo loading and retries remain in `src/features/creative/photo-media.tsx`.
 
 ## Scope
 

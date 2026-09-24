@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { site } from '@/data/site';
 import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import { creativeCatalog } from '@/data/creativeProjects';
-import { CreativeCategoryGallery } from '@/components/creative/category-gallery';
-import styles from '@/components/creative/creative.module.css';
+import { creativeCatalog } from '@/features/creative/catalog';
+import { CreativeCategoryGallery } from '@/features/creative/category-gallery';
+import styles from '@/features/creative/creative.module.css';
 
 type Props = { params: Promise<{ slug: string[] }> };
 export function generateStaticParams() {

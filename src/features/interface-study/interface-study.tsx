@@ -2,16 +2,16 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { sections } from '@/data/sections';
-import { usePageTransition } from './page-transition';
-import { CircleOverlay, type CircleGeometry, type CirclePhase } from './circle-overlay';
-import { playPressFeedback, PRESS_FEEDBACK_MS } from './press-feedback';
-import s from '@/app/(modules)/projects/interface-study/persona.module.css';
+import { usePageTransition } from '../navigation/page-transition';
+import { CircleOverlay, type CircleGeometry, type CirclePhase } from '../navigation/circle-overlay';
+import { playPressFeedback, PRESS_FEEDBACK_MS } from '../navigation/press-feedback';
+import s from './interface-study.module.css';
 
 const section = sections[0];
 const COVER_MS = 420;
 const REVEAL_MS = 420;
 
-export function PersonaPressDemo() {
+export function InterfaceStudy() {
   const { motionOff } = usePageTransition();
   const stage = useRef<HTMLDivElement>(null);
   const animation = useRef<Animation | null>(null);

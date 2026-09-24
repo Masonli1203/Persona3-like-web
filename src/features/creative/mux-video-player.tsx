@@ -3,10 +3,10 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { MuxPlayerRefAttributes } from '@mux/mux-player-react';
-import { usePageTransition } from '@/components/page-transition';
-import { CreativeVisual } from '@/components/creative/creative-visual';
-import type { CreativeCategory } from '@/data/creativeProjects';
-import styles from '@/components/creative/creative.module.css';
+import { usePageTransition } from '@/features/navigation/page-transition';
+import { CreativeVisual } from './creative-visual';
+import type { CreativeCategory } from '@/data/creative';
+import styles from './creative.module.css';
 
 const MuxPlayer = dynamic(() => import('@mux/mux-player-react'), { ssr: false });
 const autoplayQuery =

@@ -1,5 +1,5 @@
 import { site } from './site';
-import type { ProjectId } from './works';
+import type { ProjectId } from './projects';
 
 type ProfileProject = {
   projectId: ProjectId;

@@ -32,8 +32,8 @@ npm run dev
 - `src/data/site.ts`：姓名、缩写、身份、地点、页面 metadata 和首页插图。
 - `src/data/profile.ts`：简介、教育、经历、技能、邮箱和简历路径。
 - `src/data/sections.ts`：章节名称和首页预览文案。
-- `src/data/creativeProjects.ts`：分类、作品、照片与视频配置。
-- `src/data/works.ts`：项目列表与详情链接。
+- `src/data/creative.ts`：分类、作品、照片与视频配置。
+- `src/data/projects.ts`：项目列表与详情链接。
 - `src/app/(modules)/projects/`：通用项目详情页与交互示例。
 
 详细步骤见 [CUSTOMIZATION](docs/CUSTOMIZATION.md)。个人副本可通过 GitHub 的 Use this template 创建。

@@ -1,4 +1,4 @@
-type Project = {
+export type Project = {
   id: string;
   number: string;
   title: string;
@@ -77,10 +77,3 @@ const projectRecords = [
 
 export type ProjectId = (typeof projectRecords)[number]['id'];
 export const projects: readonly Project[] = projectRecords;
-
-// References use stable identities; presentation order, numbers, and URLs may change separately.
-export function getProject(id: ProjectId): Project {
-  const project = projects.find((project) => project.id === id);
-  if (!project) throw new Error(`Unknown project reference: ${id}`);
-  return project;
-}

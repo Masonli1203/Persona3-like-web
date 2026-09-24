@@ -12,6 +12,6 @@ Download URLs are recorded in `sources.json`. Both files use the SIL Open Font L
 
 ## Anton
 
-The homepage's sliced manifesto uses `anton-regular.ttf`, scoped through `next/font/local` in `home-prototype.tsx`.
+The homepage's sliced manifesto uses `anton-regular.ttf`, scoped through `next/font/local` in `src/features/home/home-page.tsx`.
 Source: https://raw.githubusercontent.com/google/fonts/main/ofl/anton/Anton-Regular.ttf
 License: SIL Open Font License, saved in `anton-OFL.txt` from the same directory.

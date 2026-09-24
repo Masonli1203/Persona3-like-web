@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { access } from 'node:fs/promises';
-import { projects } from '../src/data/works.ts';
+import { projects } from '../src/data/projects.ts';
 
 test('project identities and linked detail routes are unambiguous and resolve to real pages', async () => {
   assert.equal(new Set(projects.map((project) => project.id)).size, projects.length);
