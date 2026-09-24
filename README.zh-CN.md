@@ -2,7 +2,7 @@
 
 受 Persona 界面风格启发的通用作品集模板。使用 Next.js、React、TypeScript、Tailwind CSS、Framer Motion 和 Three.js。
 
-[English](README.md) · [配置说明](docs/CUSTOMIZATION.md) · [MIT 许可](LICENSE)
+[English](README.md) · [文档导航](docs/README.md) · [配置说明](docs/CUSTOMIZATION.md) · [MIT 许可](LICENSE)
 
 ![首页预览](docs/screenshots/home.png)
 
@@ -26,6 +26,22 @@ npm run dev
 ```
 
 访问 [本地预览](http://127.0.0.1:3000)。默认无需环境变量。
+
+## 仓库目录
+
+```text
+Persona3-like-web/
+├── src/             路由、可编辑数据、功能模块、共享界面与字体
+├── public/          网站静态资源
+├── tests/           单元测试与浏览器测试
+├── scripts/         检查与素材生成脚本
+├── docs/            架构、定制、写作规范与设计记录
+├── .github/         CI 与协作模板
+├── .vscode/         共享的资源管理器隐藏设置
+└── 根目录文件        README、许可证、代理入口与工具配置
+```
+
+`src/` 内部的职责划分见[架构说明](docs/ARCHITECTURE.md#source-layout)。生成目录与依赖已被 Git 忽略；用 VS Code 打开实际仓库后，也会在资源管理器中隐藏，详见[编辑器设置](docs/README.md#root-files-and-generated-output--根目录文件与生成物)。
 
 ## 替换内容
 
