@@ -1,21 +1,20 @@
 import type { Metadata } from 'next';
 import { site } from '@/data/site';
+import { getProject } from '@/data/works';
 import { ModuleHeading } from '@/components/module-parts';
 import { ExpandableImage } from '@/components/expandable-image';
 import { CaseContentsDock } from '@/components/case-contents-dock';
 import '../case-study.css';
+const project = getProject('sample-project');
+const description = 'A case study structure ready for your own content.';
 export const metadata: Metadata = {
-  title: `Example Project — ${site.name}`,
-  description: 'A case study structure ready for your own content.',
+  title: `${project.title} — ${site.name}`,
+  description,
 };
 export default function Page() {
   return (
     <article className="project-case template-case">
-      <ModuleHeading
-        number="02"
-        title="EXAMPLE PROJECT"
-        description="A case study structure ready for your own content."
-      />
+      <ModuleHeading number="02" title={project.title.toUpperCase()} description={description} />
       <nav id="case-contents" className="template-case-contents" aria-label="Case study sections">
         <a href="#overview">Overview</a>
         <a href="#process">Process</a>

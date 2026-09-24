@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { creativeProjects, type CreativeCategory } from '@/data/creativeProjects';
+import { creativeCatalog, type CreativeCategory } from '@/data/creativeProjects';
 import { usePageTransition } from '@/components/page-transition';
 import { CreativeVisual } from './creative-visual';
 import { CreativeViewingSession, CreativeWorkLink } from './viewing-session';
@@ -40,7 +40,7 @@ function PreviewClip({ src, stop }: { src: string; stop: () => void }) {
 }
 
 export function CreativeCategoryGallery({ category }: { category: CreativeCategory }) {
-  const works = creativeProjects.filter((project) => project.category === category);
+  const works = creativeCatalog.worksInCategory(category);
   const [preview, setPreview] = useState<string | null>(null);
   const stop = useCallback(() => setPreview(null), []);
   const { motionOff } = usePageTransition();

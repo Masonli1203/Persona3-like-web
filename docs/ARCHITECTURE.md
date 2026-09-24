@@ -27,10 +27,12 @@ The desktop homepage artwork is intentionally separate from portrait/mobile back
 - `site.ts`: shared identity and metadata.
 - `profile.ts`: structured profile and optional contact links.
 - `sections.ts`: chapter summaries and homepage previews.
-- `works.ts`: project examples and route links.
-- `creativeProjects.ts`: categories, media sources, and photo series.
+- `works.ts`: project records with stable IDs, separate display numbers, shared titles, and route links. `getProject(id)` resolves typed references from About and detail pages; the index uses the same records. About keeps its own medium and summary, while each detail page owns its description, body, and interactive demo. Detail page headings and metadata derive their title from the shared record.
+- `creativeProjects.ts`: categories, media sources, photo series, and the validated `creativeCatalog` interface. It owns category/work lookup, entry paths, viewer links, route resolution, and static route parameters. Catalog construction rejects duplicate identities, unknown categories, invalid path segments, and collisions between category and work routes. Callers do not filter raw content or reconstruct these URLs.
 
-Creative category pages render a client gallery inside Suspense. The `viewing-session` module owns work selection in the URL query, the history entry created when opening a work, the native dialog, and photo navigation. The category gallery renders work links through that module and only observes whether a viewer is open to suppress previews.
+Creative category pages render a client gallery inside Suspense. The route page and metadata use the same catalog resolver; existing work entry paths redirect to the catalog's category viewer link. Unknown paths return 404, while missing or invalid work queries leave the category list visible. Photography keeps its namespaced entry paths; non-photography entry slugs share one namespace with category IDs.
+
+The `viewing-session` module owns changes to work selection in the URL query, the history entry created when opening a work, the native dialog, and photo navigation. It uses the catalog to look up the selected work and generate viewer links. The category gallery renders work links through that module and only observes whether a viewer is open to suppress previews.
 
 The same module owns the photo overview and its thumbnail references, so returning restores scroll and focus without querying another module's private markup. Series positions are kept separately for each work during the current loaded page and reset on reload; reopening a series shows its overview. Browser Back follows real history, while the viewer's Back control closes a directly opened work to its category without inserting a synthetic history entry. Photo loading and retry behavior live in the internal `photo-media` module. See [the browsing glossary](../CONTEXT.md) and [the confirmed viewing-session design](design/creative-viewing-session.md).
 

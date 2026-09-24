@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ModuleHeading } from '@/components/module-parts';
 import { MediaFocus } from '@/components/media-focus';
 import { profile } from '@/data/profile';
+import { getProject } from '@/data/works';
 import { TransitionLink } from '@/components/page-transition';
 
 export const metadata: Metadata = {
@@ -139,20 +140,23 @@ export default function AboutPage() {
               <span className="micro">04 / BUILDING</span>
             </div>
             <ul className="about-projects">
-              {profile.projects.map((project) => (
-                <li key={project.name}>
-                  <span className="micro">{project.medium}</span>
-                  <h4>{project.name}</h4>
-                  <p>{project.description}</p>
-                  <div className="project-actions">
-                    {'caseStudyHref' in project && (
-                      <TransitionLink href={project.caseStudyHref}>
-                        Read the case study <span aria-hidden="true">↗</span>
-                      </TransitionLink>
+              {profile.projects.map((entry) => {
+                const project = getProject(entry.projectId);
+                return (
+                  <li key={project.id}>
+                    <span className="micro">{entry.medium}</span>
+                    <h4>{project.title}</h4>
+                    <p>{entry.description}</p>
+                    {project.caseStudyHref && (
+                      <div className="project-actions">
+                        <TransitionLink href={project.caseStudyHref}>
+                          Read the case study <span aria-hidden="true">↗</span>
+                        </TransitionLink>
+                      </div>
                     )}
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </section>
 

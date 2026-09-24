@@ -1,14 +1,14 @@
 'use client';
 import { useRef, useState } from 'react';
-import { creativeCategories, categoryPath } from '@/data/creativeProjects';
+import { creativeCatalog } from '@/data/creativeProjects';
 import { TransitionLink as Link, usePageTransition } from './page-transition';
 import Image from 'next/image';
 import styles from './creative/category-menu.module.css';
 
 export function CreativeGallery() {
-  const [selected, setSelected] = useState<string>(creativeCategories[0].id);
+  const [selected, setSelected] = useState<string>(creativeCatalog.categories[0].id);
   const { motionOff, setMotionOff } = usePageTransition();
-  const category = creativeCategories.find((item) => item.id === selected)!;
+  const category = creativeCatalog.categories.find((item) => item.id === selected)!;
   const stage = useRef<HTMLDivElement>(null);
   return (
     <div
@@ -41,10 +41,10 @@ export function CreativeGallery() {
     >
       <div className={styles.sweep} aria-hidden="true" />
       <nav className={styles.menu} aria-label="Creative categories">
-        {creativeCategories.map((item) => (
+        {creativeCatalog.categories.map((item) => (
           <Link
             key={item.id}
-            href={categoryPath(item.id)}
+            href={creativeCatalog.categoryPath(item.id)}
             className={styles.entry}
             data-selected={selected === item.id}
             onPointerEnter={() => setSelected(item.id)}

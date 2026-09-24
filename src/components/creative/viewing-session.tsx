@@ -12,7 +12,7 @@ import {
 } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import {
-  creativeProjects,
+  creativeCatalog,
   type CreativeCategory,
   type CreativeProject,
 } from '@/data/creativeProjects';
@@ -23,13 +23,9 @@ import styles from './creative.module.css';
 // Memory lasts for this loaded page, including client-side route changes.
 const seriesPositions = new Map<string, number>();
 const ViewingContext = createContext<{
-  pathname: string;
+  category: CreativeCategory;
   open: (slug: string, trigger: HTMLAnchorElement) => void;
 } | null>(null);
-
-function workHref(pathname: string, slug: string) {
-  return `${pathname}?work=${encodeURIComponent(slug)}`;
-}
 
 export function CreativeViewingSession({
   category,
@@ -40,13 +36,15 @@ export function CreativeViewingSession({
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const selected = creativeProjects.find(
-    (project) => project.category === category && project.slug === searchParams.get('work'),
-  );
+  const selected = creativeCatalog.findWork(category, searchParams.get('work'));
 
   function open(slug: string, trigger: HTMLAnchorElement) {
     trigger.focus({ preventScroll: true });
-    window.history.pushState({ creativeViewer: slug }, '', workHref(pathname, slug));
+    window.history.pushState(
+      { creativeViewer: slug },
+      '',
+      creativeCatalog.workHref({ category, slug }),
+    );
   }
 
   function close() {
@@ -55,7 +53,7 @@ export function CreativeViewingSession({
   }
 
   return (
-    <ViewingContext.Provider value={{ pathname, open }}>
+    <ViewingContext.Provider value={{ category, open }}>
       {children(!!selected)}
       {selected && (
         <WorkViewer key={`${category}/${selected.slug}`} project={selected} close={close} />
@@ -75,7 +73,7 @@ export function CreativeWorkLink({
   return (
     <a
       {...props}
-      href={workHref(session.pathname, slug)}
+      href={creativeCatalog.workHref({ category: session.category, slug })}
       aria-haspopup="dialog"
       onClick={(event) => {
         onClick?.(event);

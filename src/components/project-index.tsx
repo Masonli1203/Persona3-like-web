@@ -20,7 +20,7 @@ export function ProjectIndex() {
         {projects.map((item, index) => {
           const content = (
             <>
-              <span className="micro">{item.id}</span>
+              <span className="micro">{item.number}</span>
               <span className="project-row-text">
                 <strong>{item.title}</strong>
                 <span>{item.category}</span>
@@ -101,7 +101,7 @@ function ProjectPreview({ project }: { project: (typeof projects)[number] }) {
       className="project-preview-image"
     />
   ) : (
-    <MediaPlaceholder code={`PROJECT / ${project.id}`} tone="blue" label={project.label} />
+    <MediaPlaceholder code={`PROJECT / ${project.number}`} tone="blue" label={project.label} />
   );
   return (
     <>

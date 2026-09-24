@@ -1,4 +1,4 @@
-export const creativeCategories = [
+const creativeCategories = [
   { id: 'vfx-film', number: '01', title: 'VFX / FILM', cover: '/images/sample-film.svg' },
   { id: '3d', number: '02', title: '3D', cover: '/images/sample-3d.svg' },
   { id: 'ai-experiments', number: '03', title: 'AI EXPERIMENTS', cover: '/images/sample-ai.svg' },
@@ -37,7 +37,7 @@ export type CreativeProject = ProjectBase &
   );
 
 // Supply your own public playback ID or local videoSrc. No account identifiers ship here.
-export const creativeProjects: CreativeProject[] = [
+const creativeProjects: CreativeProject[] = [
   {
     slug: 'film-study',
     title: 'Film Study',
@@ -90,14 +90,99 @@ export const creativeProjects: CreativeProject[] = [
     ],
   },
 ];
-export function categoryPath(category: CreativeCategory) {
-  return `/creative/${category}`;
+
+type Category = {
+  id: CreativeCategory;
+  number: string;
+  title: string;
+  cover: string;
+};
+type WorkIdentity = Pick<CreativeProject, 'category' | 'slug'>;
+type CreativeRoute =
+  { kind: 'category'; category: Category } | { kind: 'work'; work: CreativeProject };
+
+function categoryPath(category: CreativeCategory) {
+  return `/creative/${encodeURIComponent(category)}`;
 }
-export function creativePath(project: CreativeProject) {
-  return `/creative/${project.category === 'photography' ? 'photography/' : ''}${project.slug}`;
+
+function workSegments(work: WorkIdentity) {
+  return work.category === 'photography' ? ['photography', work.slug] : [work.slug];
 }
-export function findCreativeProject(segments: string[]) {
-  return creativeProjects.find(
-    (project) => creativePath(project) === `/creative/${segments.join('/')}`,
-  );
+
+function workPath(work: WorkIdentity) {
+  return `/creative/${workSegments(work).map(encodeURIComponent).join('/')}`;
 }
+
+function workHref(work: WorkIdentity) {
+  return `${categoryPath(work.category)}?work=${encodeURIComponent(work.slug)}`;
+}
+
+function validateSegment(value: string) {
+  if (!value.trim() || value === '.' || value === '..' || /[/\\\u0000-\u001f\u007f]/u.test(value)) {
+    throw new Error(`Invalid creative route segment: ${JSON.stringify(value)}`);
+  }
+}
+
+// Build once from editable content. Invalid identities fail before any route can shadow another.
+export function createCreativeCatalog(
+  categories: readonly Category[],
+  works: readonly CreativeProject[],
+) {
+  const byCategory = new Map<CreativeCategory, CreativeProject[]>();
+  const byIdentity = new Map<string, CreativeProject>();
+  const routes = new Map<string, CreativeRoute>();
+  const segments: string[][] = [];
+  const identityKey = (category: CreativeCategory, slug: string) =>
+    JSON.stringify([category, slug]);
+
+  function addRoute(path: string[], route: CreativeRoute) {
+    const key = JSON.stringify(path);
+    if (routes.has(key)) {
+      throw new Error(
+        `Conflicting creative route: /creative/${path.map(encodeURIComponent).join('/')}`,
+      );
+    }
+    routes.set(key, route);
+    segments.push(path);
+  }
+
+  for (const category of categories) {
+    validateSegment(category.id);
+    addRoute([category.id], { kind: 'category', category });
+    byCategory.set(category.id, []);
+  }
+  for (const work of works) {
+    validateSegment(work.slug);
+    const categoryWorks = byCategory.get(work.category);
+    if (!categoryWorks) throw new Error(`Unknown creative category: ${work.category}`);
+    const key = identityKey(work.category, work.slug);
+    if (byIdentity.has(key)) {
+      throw new Error(`Duplicate creative work: ${work.category}/${work.slug}`);
+    }
+    addRoute(workSegments(work), { kind: 'work', work });
+    byIdentity.set(key, work);
+    categoryWorks.push(work);
+  }
+
+  return {
+    categories,
+    categoryPath,
+    workPath,
+    workHref,
+    worksInCategory(category: CreativeCategory): readonly CreativeProject[] {
+      return byCategory.get(category) ?? [];
+    },
+    findWork(category: CreativeCategory, slug: string | null) {
+      return slug === null ? undefined : byIdentity.get(identityKey(category, slug));
+    },
+    // Next.js params are already decoded; decoding again would corrupt literal percent signs.
+    resolveRoute(path: readonly string[]): CreativeRoute | undefined {
+      return routes.get(JSON.stringify(path));
+    },
+    staticParams() {
+      return segments.map((slug) => ({ slug: [...slug] }));
+    },
+  };
+}
+
+export const creativeCatalog = createCreativeCatalog(creativeCategories, creativeProjects);

@@ -1,5 +1,6 @@
 type Project = {
   id: string;
+  number: string;
   title: string;
   category: string;
   description: string;
@@ -15,9 +16,10 @@ type Project = {
   image?: { src: string; alt: string; width: number; height: number };
 };
 
-export const projects: readonly Project[] = [
+const projectRecords = [
   {
-    id: '01',
+    id: 'sample-project',
+    number: '01',
     title: 'Example Project',
     category: 'Case study template',
     description: 'An editable case study with overview, process, and outcome sections.',
@@ -34,7 +36,8 @@ export const projects: readonly Project[] = [
     },
   },
   {
-    id: '02',
+    id: 'interface-study',
+    number: '02',
     title: 'Interface Study',
     category: 'Interaction demo',
     description: 'Try the chapter transition and press feedback in an isolated demo.',
@@ -44,7 +47,8 @@ export const projects: readonly Project[] = [
     caseStudyHref: '/projects/interface-study',
   },
   {
-    id: '03',
+    id: 'space-configurator',
+    number: '03',
     title: 'Space Configurator',
     category: 'Procedural 3D demo',
     description: 'Adjust dimensions, finishes, and accessories in a working browser model.',
@@ -60,7 +64,8 @@ export const projects: readonly Project[] = [
     },
   },
   {
-    id: '04',
+    id: 'next-project',
+    number: '04',
     title: 'Your Next Project',
     category: 'Project placeholder',
     description: 'Add another project here.',
@@ -68,4 +73,14 @@ export const projects: readonly Project[] = [
     tags: ['Exploration'],
     label: 'ADD YOUR MEDIA',
   },
-];
+] as const satisfies readonly Project[];
+
+export type ProjectId = (typeof projectRecords)[number]['id'];
+export const projects: readonly Project[] = projectRecords;
+
+// References use stable identities; presentation order, numbers, and URLs may change separately.
+export function getProject(id: ProjectId): Project {
+  const project = projects.find((project) => project.id === id);
+  if (!project) throw new Error(`Unknown project reference: ${id}`);
+  return project;
+}

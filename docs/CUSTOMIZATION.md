@@ -14,11 +14,19 @@ Place local videos under `public/media/` and reference them with paths such as `
 
 Category pages use `/creative/<category>`. Opening a work adds `?work=<slug>` for a shareable dialog. Canonical work routes redirect to that viewer; photography work routes include `/creative/photography/<slug>`.
 
+The same file exports `creativeCatalog` for listing works, finding a work within its category, generating links, resolving route segments, and generating static parameters. Use this interface in pages and components instead of filtering content or assembling URLs. Edit the category and work arrays to change content; the catalog validates them when loaded, including during the production build.
+
+Slugs must be nonempty single path segments, excluding `.` and `..`, slashes, backslashes, and control characters. Each category requires unique work slugs. Non-photography work slugs also must be unique across categories and must not equal any category ID, since these share `/creative/<slug>`. Photography slugs have a separate `/creative/photography/<slug>` namespace. Link generators encode punctuation and Unicode; store the original, unencoded slug in content. Invalid `work` query values leave the category list visible; unknown entry paths return 404.
+
 Public Mux playback does not need server credentials. Optional management credentials are documented in `.env.example`; put actual values in a local ignored environment file. The management client stays behind `server-only`. Never put tokens in data files or NEXT_PUBLIC variables. `npm run check:mux` performs an optional connection check. Adding Mux playback introduces external service requests only for configured videos.
 
 ## Projects
 
 Edit `src/data/works.ts` and add a route under `src/app/(modules)/projects/`. The sample project demonstrates expandable images and a floating contents dock. Interface Study isolates the press/transition interaction. Space Configurator demonstrates procedural geometry, dimensions, finishes, and accessories without claiming any client history.
+
+Each project has a stable `id`, a separate display `number`, and one shared `title`. Keep the ID when renaming, reordering, or renumbering a project. `caseStudyHref` is optional: omit it for entries without a detail page. For a route change, update this link and move the corresponding route folder; the ID stays the same.
+
+About's `profile.projects` entries use `projectId` instead of copying a name or link. Choose an ID from `works.ts` and keep the About-specific `medium` and `description` in the profile. Detail pages call `getProject(id)` for their heading and metadata title, while keeping their own description, narrative, and demo. Type checking rejects unknown references, and the project tests check unique IDs and that linked detail routes exist.
 
 The configurator uses `src/lib/alcove-config.ts` and `src/components/alcove/`. Its prices are demonstration values. After changing geometry, run `npm run preview:alcove` to refresh its SVG preview.
 
