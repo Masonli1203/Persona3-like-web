@@ -1,17 +1,20 @@
 'use client';
+
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type Ref } from 'react';
 import type { GalleryImage } from '@/data/creativeProjects';
 import styles from './creative.module.css';
 
-function PhotoThumbnail({
+export function PhotoThumbnail({
   image,
   label,
   select,
+  buttonRef,
 }: {
   image: GalleryImage;
   label: string;
   select: () => void;
+  buttonRef: Ref<HTMLButtonElement>;
 }) {
   const frame = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
@@ -38,7 +41,13 @@ function PhotoThumbnail({
       className={styles.thumbnailFrame}
       style={{ aspectRatio: `${image.width}/${image.height}` }}
     >
-      <button type="button" aria-label={label} onClick={select} className={styles.thumbnailButton}>
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-label={label}
+        onClick={select}
+        className={styles.thumbnailButton}
+      >
         {near && (
           <Image
             key={attempt}
@@ -76,7 +85,13 @@ function PhotoThumbnail({
   );
 }
 
-function FullPhoto({ image, neighbors }: { image: GalleryImage; neighbors: GalleryImage[] }) {
+export function FullPhoto({
+  image,
+  neighbors,
+}: {
+  image: GalleryImage;
+  neighbors: GalleryImage[];
+}) {
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [attempt, setAttempt] = useState(0);
   // Wait for the selected photo before spending bandwidth on adjacent photos.
@@ -142,78 +157,5 @@ function FullPhoto({ image, neighbors }: { image: GalleryImage; neighbors: Galle
         </div>
       )}
     </div>
-  );
-}
-
-export function PhotographyGallery({
-  images,
-  title,
-  index,
-  select,
-}: {
-  images: GalleryImage[];
-  title: string;
-  index: number | null;
-  select: (index: number) => void;
-}) {
-  function step(direction: number) {
-    select(((index ?? 0) + direction + images.length) % images.length);
-  }
-  if (!images.length) return <p className={styles.draft}>Photographs will be added here.</p>;
-  return (
-    <>
-      <div className={styles.photoGrid} hidden={index !== null}>
-        {images.map((image, position) => (
-          <figure
-            key={image.src}
-            data-portrait={image.height > image.width}
-            data-photo-index={position}
-          >
-            <PhotoThumbnail
-              image={image}
-              label={`Enlarge ${title}, image ${position + 1}`}
-              select={() => select(position)}
-            />
-            <figcaption className="micro">{String(position + 1).padStart(2, '0')}</figcaption>
-          </figure>
-        ))}
-      </div>
-      {index !== null && (
-        <section
-          className={styles.photoReader}
-          aria-label={`${title} photo viewer`}
-          onKeyDown={(event) => {
-            if (event.key === 'ArrowLeft') {
-              event.preventDefault();
-              step(-1);
-            }
-            if (event.key === 'ArrowRight') {
-              event.preventDefault();
-              step(1);
-            }
-          }}
-        >
-          <FullPhoto
-            key={images[index].src}
-            image={images[index]}
-            neighbors={[
-              images[(index - 1 + images.length) % images.length],
-              images[(index + 1) % images.length],
-            ]}
-          />
-          <div className={styles.lightboxNav}>
-            <button autoFocus type="button" onClick={() => step(-1)} disabled={images.length < 2}>
-              ← Previous
-            </button>
-            <p aria-live="polite">
-              {title} / {index + 1} of {images.length}
-            </p>
-            <button type="button" onClick={() => step(1)} disabled={images.length < 2}>
-              Next →
-            </button>
-          </div>
-        </section>
-      )}
-    </>
   );
 }

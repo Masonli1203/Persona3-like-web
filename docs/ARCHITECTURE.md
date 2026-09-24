@@ -30,6 +30,10 @@ The desktop homepage artwork is intentionally separate from portrait/mobile back
 - `works.ts`: project examples and route links.
 - `creativeProjects.ts`: categories, media sources, and photo series.
 
-Creative category pages render a client gallery inside Suspense. Work selection is represented in the URL query and a native dialog. The photo reader restores the grid position and focus when returning. Three.js loads when the configurator nears the viewport; Mux Player loads only for configured playback.
+Creative category pages render a client gallery inside Suspense. The `viewing-session` module owns work selection in the URL query, the history entry created when opening a work, the native dialog, and photo navigation. The category gallery renders work links through that module and only observes whether a viewer is open to suppress previews.
+
+The same module owns the photo overview and its thumbnail references, so returning restores scroll and focus without querying another module's private markup. Series positions are kept separately for each work during the current loaded page and reset on reload; reopening a series shows its overview. Browser Back follows real history, while the viewer's Back control closes a directly opened work to its category without inserting a synthetic history entry. Photo loading and retry behavior live in the internal `photo-media` module. See [the browsing glossary](../CONTEXT.md) and [the confirmed viewing-session design](design/creative-viewing-session.md).
+
+Three.js loads when the configurator nears the viewport; Mux Player loads only for configured playback.
 
 No secrets or external services are required for the default starter. The optional Mux management client is server-only. Public playback IDs belong in media configuration only after the template is personalized.
