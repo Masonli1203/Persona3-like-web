@@ -2,7 +2,7 @@
 
 A reusable Persona-inspired portfolio with bold typography, animated chapter navigation, and editable example content.
 
-[中文说明](README.zh-CN.md) · [Customization](docs/CUSTOMIZATION.md) · [Architecture](docs/ARCHITECTURE.md) · [MIT license](LICENSE)
+[中文说明](README.zh-CN.md) · [Documentation](docs/README.md) · [Customization](docs/CUSTOMIZATION.md) · [Architecture](docs/ARCHITECTURE.md) · [MIT license](LICENSE)
 
 ![Homepage preview](docs/screenshots/home.png)
 
@@ -29,17 +29,33 @@ npm run dev
 
 Open [localhost](http://127.0.0.1:3000). No environment variables are needed for the starter. To create an independent portfolio, use GitHub's **Use this template** action; to contribute changes, fork this repository.
 
+## Repository layout
+
+```text
+Persona3-like-web/
+├── src/             Routes, editable data, features, shared UI, and fonts
+├── public/          Static website assets
+├── tests/           Unit and browser tests
+├── scripts/         Checks and asset generation
+├── docs/            Architecture, customization, writing style, and designs
+├── .github/         CI and contribution templates
+├── .vscode/         Shared Explorer exclusions
+└── Root files       README, license, agent entry files, and tool configuration
+```
+
+See [Architecture](docs/ARCHITECTURE.md#source-layout) for the layout inside `src/`. Generated output and dependencies are Git-ignored and hidden in VS Code when this repository folder is open; see [editor settings](docs/README.md#root-files-and-generated-output--根目录文件与生成物).
+
 ## Customize
 
-| File                           | Purpose                                                        |
-| ------------------------------ | -------------------------------------------------------------- |
-| `src/data/site.ts`             | Shared name, initials, title, location, metadata, hero artwork |
-| `src/data/profile.ts`          | Biography, experience, education, optional email and CV        |
-| `src/data/sections.ts`         | Homepage previews and chapter labels                           |
-| `src/data/creativeProjects.ts` | Categories, media, photo series, optional playback IDs         |
-| `src/data/works.ts`            | Project list and case study links                              |
-| `src/app/(modules)/projects/`  | Example project pages                                          |
-| `public/images/`               | Neutral placeholder artwork                                    |
+| File                          | Purpose                                                        |
+| ----------------------------- | -------------------------------------------------------------- |
+| `src/data/site.ts`            | Shared name, initials, title, location, metadata, hero artwork |
+| `src/data/profile.ts`         | Biography, experience, education, optional email and CV        |
+| `src/data/sections.ts`        | Homepage previews and chapter labels                           |
+| `src/data/creative.ts`        | Categories, media, photo series, optional playback IDs         |
+| `src/data/projects.ts`        | Project list and case study links                              |
+| `src/app/(modules)/projects/` | Example project pages                                          |
+| `public/images/`              | Neutral placeholder artwork                                    |
 
 See [customization instructions](docs/CUSTOMIZATION.md) for video setup and adding content.
 
@@ -64,6 +80,6 @@ The privacy guard is intended for contributions to this generic template. Update
 
 ## License and inspiration
 
-Code and generic SVG artwork use the [MIT license](LICENSE). Bundled fonts retain their OFL notices in `src/app/fonts/`; dependency licenses remain their own.
+Code and generic SVG artwork use the [MIT license](LICENSE). Bundled fonts retain their OFL notices in `src/assets/fonts/`; dependency licenses remain their own.
 
 An independent, unofficial project inspired by Persona's visual language. No official game artwork, music, logos, or fonts are included, and there is no affiliation with ATLUS or SEGA. Only add media you have permission to distribute.

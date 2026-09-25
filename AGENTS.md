@@ -8,4 +8,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-Read [WRITING_STYLE.md](WRITING_STYLE.md) before editing template copy. Keep all sample content generic.
+Read [the writing style](docs/WRITING_STYLE.md) before editing template copy. Keep all sample content generic.
+
+For repository organization and document locations, start with [the documentation index](docs/README.md).

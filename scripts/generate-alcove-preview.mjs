@@ -1,5 +1,9 @@
 import { mkdir, writeFile } from 'node:fs/promises';
-import { buildAlcove, DEFAULT_CONFIG, FINISHES } from '../src/lib/alcove-config.ts';
+import {
+  buildAlcove,
+  DEFAULT_CONFIG,
+  FINISHES,
+} from '../src/features/space-configurator/alcove-config.ts';
 import { dot, painterOrder, planeOf } from './lib/preview-visibility.mjs';
 
 // The cover is generated from the same original assembly as the interactive demo.

@@ -2,41 +2,26 @@ import type { Metadata } from 'next';
 import { site } from '@/data/site';
 import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import {
-  creativeCategories,
-  creativeProjects,
-  creativePath,
-  categoryPath,
-  findCreativeProject,
-} from '@/data/creativeProjects';
-import { CreativeCategoryGallery } from '@/components/creative/category-gallery';
-import styles from '@/components/creative/creative.module.css';
+import { creativeCatalog } from '@/features/creative/catalog';
+import { CreativeCategoryGallery } from '@/features/creative/category-gallery';
+import styles from '@/features/creative/creative.module.css';
 
 type Props = { params: Promise<{ slug: string[] }> };
 export function generateStaticParams() {
-  return [
-    ...creativeCategories.map((category) => ({ slug: [category.id] })),
-    ...creativeProjects.map((project) => ({
-      slug: creativePath(project).replace('/creative/', '').split('/'),
-    })),
-  ];
+  return creativeCatalog.staticParams();
 }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const category =
-    slug.length === 1 && creativeCategories.find((category) => category.id === slug[0]);
-  const project = findCreativeProject(slug);
-  return { title: `${category ? category.title : project?.title || 'Creative'} — ${site.name}` };
+  const route = creativeCatalog.resolveRoute(slug);
+  const title = route?.kind === 'category' ? route.category.title : route?.work.title;
+  return { title: `${title || 'Creative'} — ${site.name}` };
 }
 export default async function CreativeCategoryPage({ params }: Props) {
   const { slug } = await params;
-  const category =
-    slug.length === 1 && creativeCategories.find((category) => category.id === slug[0]);
-  if (!category) {
-    const project = findCreativeProject(slug);
-    if (project) redirect(`${categoryPath(project.category)}?work=${project.slug}`);
-    notFound();
-  }
+  const route = creativeCatalog.resolveRoute(slug);
+  if (!route) notFound();
+  if (route.kind === 'work') redirect(creativeCatalog.workHref(route.work));
+  const { category } = route;
   return (
     <section className={styles.categoryPage}>
       <header className={styles.categoryHeading}>

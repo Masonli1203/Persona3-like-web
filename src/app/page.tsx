@@ -1,4 +1,4 @@
-import { HomePrototype } from '@/components/home-prototype';
+import { HomePage } from '@/features/home/home-page';
 export default function Home() {
-  return <HomePrototype />;
+  return <HomePage />;
 }

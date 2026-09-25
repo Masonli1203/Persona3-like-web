@@ -8,7 +8,7 @@ import {
   layoutFor,
   normalizeConfig,
   quoteFor,
-} from '../src/lib/alcove-config.ts';
+} from '../src/features/space-configurator/alcove-config.ts';
 
 test('all selectable dimensions produce finite parts, constant posts, and a fixed-size reference table', () => {
   let cases = 0;

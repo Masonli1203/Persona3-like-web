@@ -1,4 +1,11 @@
 import { site } from './site';
+import type { ProjectId } from './projects';
+
+type ProfileProject = {
+  projectId: ProjectId;
+  medium: string;
+  description: string;
+};
 export const profile = {
   name: site.name,
   fullName: 'Your full name',
@@ -32,12 +39,11 @@ export const profile = {
   ],
   projects: [
     {
-      name: 'Example project',
+      projectId: 'sample-project',
       medium: 'Interactive study',
       description: 'Replace this example with a project you have made.',
-      caseStudyHref: '/projects/sample-project',
     },
-  ],
+  ] satisfies ProfileProject[],
   skills: [{ category: 'Your discipline', tools: 'Tools you use' }],
   languages: [{ name: 'Your language', level: 'Your proficiency' }],
   awards: [

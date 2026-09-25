@@ -1,1 +1,1 @@
-Follow [AGENTS.md](AGENTS.md) and [WRITING_STYLE.md](WRITING_STYLE.md).
+Follow [AGENTS.md](AGENTS.md). Before editing template copy, read [the writing style](docs/WRITING_STYLE.md).
